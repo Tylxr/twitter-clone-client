@@ -12,6 +12,7 @@ const config: Config = {
 				"light-blue-gradient": "linear-gradient(90deg, rgba(3,105,161,1) 0%, rgba(56,189,248,1) 100%)",
 				// Used sky-900 -> sky-950
 				"dark-blue-gradient": "linear-gradient(90deg, rgba(8,47,73,1) 0%, rgba(12,74,110,1) 100%)",
+				"black-gradient": "linear-gradient(90deg, rgba(7,14,18,1) 0%, rgba(8,28,38,1) 100%)",
 			},
 		},
 	},
