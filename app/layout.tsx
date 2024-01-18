@@ -16,6 +16,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="en">
 			<body id="__next" className={openSans.className}>
+				<h2>layout from main</h2>
 				{children}
 			</body>
 		</html>
