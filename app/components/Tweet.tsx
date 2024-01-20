@@ -1,9 +1,10 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "@mui/material";
 
 export default function Tweet() {
     return (
-        <Card className="p-4 hover:bg-gray-50 hover:cursor-pointer">
+        <Card className="p-4 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-center">
                 <div className="w-full h-full flex flex-row justify-between items-start">
                     <div className="mr-4 bg-sky-100 h-[50px] w-[50px] min-h-[50px] min-w-[50px] rounded-full"></div>
@@ -26,11 +27,11 @@ export default function Tweet() {
                 </div>
                 <div className="mt-4 mb-1 w-full h-full flex flex-row justify-end items-center">
                     <div className="ml-6 flex flex-row items-center text-sm text-gray-500 hover:text-red-600 cursor-pointer">
-                        <FontAwesomeIcon icon="heart" className="w-4 mr-1" />
+                        <FontAwesomeIcon icon={faHeart} className="w-4 mr-1" />
                         <span className="">98 likes</span>
                     </div>
                     <div className="ml-6 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600">
-                        <FontAwesomeIcon icon="comment" className="w-4 mr-1" />
+                        <FontAwesomeIcon icon={faComment} className="w-4 mr-1" />
                         <span className="">14 comments</span>
                     </div>
                 </div>

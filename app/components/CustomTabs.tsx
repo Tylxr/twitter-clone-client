@@ -1,7 +1,8 @@
 import { Tab, Tabs } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState, Fragment } from "react";
-import Tweet from "./Tweet";
+import PhoneIcon from "@mui/icons-material/Phone";
+import { Face, PeopleAlt } from "@mui/icons-material";
 
 interface CustomTabsProps {
     children: React.ReactNode;
@@ -13,10 +14,10 @@ export function CustomTabs(props: CustomTabsProps) {
     return (
         <>
             <Tabs value={props.currentTab} onChange={(e, tab) => props.handleTabChange(e, tab)}>
-                <Tab icon={<FontAwesomeIcon icon="heart" />} label="Tab 1"></Tab>
-                <Tab icon={<FontAwesomeIcon icon="comment" />} label="Second tab"></Tab>
+                <Tab icon={<PeopleAlt />} iconPosition="start" label="Everyone"></Tab>
+                <Tab icon={<Face />} iconPosition="start" label="Following"></Tab>
             </Tabs>
-            {props.children}
+            <div className="mt-4">{props.children}</div>
         </>
     );
 }
