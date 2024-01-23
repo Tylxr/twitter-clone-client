@@ -1,8 +1,6 @@
 import { Tab, Tabs } from "@mui/material";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useState, Fragment } from "react";
-import PhoneIcon from "@mui/icons-material/Phone";
-import { Face, PeopleAlt } from "@mui/icons-material";
+import React from "react";
+import { PeopleAlt, Portrait } from "@mui/icons-material";
 
 interface CustomTabsProps {
     children: React.ReactNode;
@@ -13,9 +11,21 @@ interface CustomTabsProps {
 export function CustomTabs(props: CustomTabsProps) {
     return (
         <>
-            <Tabs value={props.currentTab} onChange={(e, tab) => props.handleTabChange(e, tab)}>
-                <Tab icon={<PeopleAlt />} iconPosition="start" label="Everyone"></Tab>
-                <Tab icon={<Face />} iconPosition="start" label="Following"></Tab>
+            <Tabs value={props.currentTab} onChange={(e, tab) => props.handleTabChange(e, tab)} centered>
+                <Tab
+                    icon={<PeopleAlt fontSize="small" />}
+                    iconPosition="start"
+                    label="Everyone"
+                    className="text-sky-800"
+                    sx={{ textTransform: "revert", paddingHorizontal: 8 }}
+                ></Tab>
+                <Tab
+                    icon={<Portrait />}
+                    iconPosition="start"
+                    label="Following"
+                    className="text-sky-800"
+                    sx={{ textTransform: "revert", paddingHorizontal: 8 }}
+                ></Tab>
             </Tabs>
             <div className="mt-4">{props.children}</div>
         </>
