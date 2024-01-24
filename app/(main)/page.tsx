@@ -13,15 +13,15 @@ export default function Page({ children }: { children: React.ReactNode }) {
             <FeedTabs currentTab={currentTab} handleTabChange={handleTabChange}>
                 <FeedTabPanel currentTab={currentTab} tabIndex={0}>
                     <div className="mb-4">
-                        <Tweet />
+                        <Tweet likeCount={19} commentCount={4} />
                     </div>
                     <div className="mb-4">
-                        <Tweet />
+                        <Tweet likeCount={74} commentCount={1} />
                     </div>
                 </FeedTabPanel>
                 <FeedTabPanel currentTab={currentTab} tabIndex={1}>
                     <div className="mb-4">
-                        <Tweet />
+                        <Tweet likeCount={10} commentCount={8} />
                     </div>
                 </FeedTabPanel>
             </FeedTabs>

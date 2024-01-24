@@ -2,7 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "@mui/material";
 
-export default function Tweet() {
+interface TweetProps {
+    likeCount: number;
+    commentCount: number;
+}
+
+export default function Tweet(props: TweetProps) {
     return (
         <Card className="p-4 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-center">
@@ -28,11 +33,15 @@ export default function Tweet() {
                 <div className="mt-4 mb-1 w-full h-full flex flex-row justify-end items-center">
                     <div className="ml-6 flex flex-row items-center text-sm text-gray-500 hover:text-red-600 cursor-pointer">
                         <FontAwesomeIcon icon={faHeart} className="w-4 mr-1" />
-                        <span>98 likes</span>
+                        <span>
+                            {props.likeCount} {props.likeCount === 1 ? "like" : "likes"}
+                        </span>
                     </div>
                     <div className="ml-6 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600">
                         <FontAwesomeIcon icon={faComment} className="w-4 mr-1" />
-                        <span>14 comments</span>
+                        <span>
+                            {props.commentCount} {props.commentCount === 1 ? "like" : "likes"}
+                        </span>
                     </div>
                 </div>
             </div>
