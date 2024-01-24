@@ -9,11 +9,50 @@ export default function Page({ children }: { children: React.ReactNode }) {
     const handleTabChange = (event: React.SyntheticEvent, tab: number) => setTab(tab);
 
     return (
-        <Card className="p-4 bg-gray-0">
+        <Card className="p-4 overflow-y-scroll container-scroll">
             <FeedTabs currentTab={currentTab} handleTabChange={handleTabChange}>
                 <FeedTabPanel currentTab={currentTab} tabIndex={0}>
                     <div className="mb-4">
                         <Tweet likeCount={19} commentCount={4} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
+                    </div>
+                    <div className="mb-4">
+                        <Tweet likeCount={74} commentCount={1} />
                     </div>
                     <div className="mb-4">
                         <Tweet likeCount={74} commentCount={1} />
