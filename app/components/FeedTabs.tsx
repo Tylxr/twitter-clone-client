@@ -2,13 +2,13 @@ import { Tab, Tabs } from "@mui/material";
 import React from "react";
 import { PeopleAlt, Portrait } from "@mui/icons-material";
 
-interface CustomTabsProps {
+interface FeedTabsProps {
     children: React.ReactNode;
     currentTab: number;
     handleTabChange: (e: React.SyntheticEvent, tab: number) => void;
 }
 
-export function CustomTabs(props: CustomTabsProps) {
+export function FeedTabs(props: FeedTabsProps) {
     return (
         <>
             <Tabs value={props.currentTab} onChange={(e, tab) => props.handleTabChange(e, tab)} centered>
@@ -32,12 +32,12 @@ export function CustomTabs(props: CustomTabsProps) {
     );
 }
 
-interface CustomTabPanelProps {
+interface FeedTabPanelProps {
     children?: React.ReactNode;
     currentTab: number;
     tabIndex: number;
 }
-export function CustomTabPanel(props: CustomTabPanelProps) {
+export function FeedTabPanel(props: FeedTabPanelProps) {
     return (
         <div role="tabpanel" hidden={props.currentTab !== props.tabIndex}>
             {props.children}

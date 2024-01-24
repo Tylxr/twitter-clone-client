@@ -28,11 +28,11 @@ export default function Tweet() {
                 <div className="mt-4 mb-1 w-full h-full flex flex-row justify-end items-center">
                     <div className="ml-6 flex flex-row items-center text-sm text-gray-500 hover:text-red-600 cursor-pointer">
                         <FontAwesomeIcon icon={faHeart} className="w-4 mr-1" />
-                        <span className="">98 likes</span>
+                        <span>98 likes</span>
                     </div>
                     <div className="ml-6 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600">
                         <FontAwesomeIcon icon={faComment} className="w-4 mr-1" />
-                        <span className="">14 comments</span>
+                        <span>14 comments</span>
                     </div>
                 </div>
             </div>

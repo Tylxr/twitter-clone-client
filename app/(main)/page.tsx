@@ -1,5 +1,5 @@
 "use client";
-import { CustomTabs, CustomTabPanel } from "../components/CustomTabs";
+import { FeedTabs, FeedTabPanel } from "../components/FeedTabs";
 import Tweet from "../components/Tweet";
 import React, { useState } from "react";
 import { Card } from "@mui/material";
@@ -10,21 +10,21 @@ export default function Page({ children }: { children: React.ReactNode }) {
 
     return (
         <Card className="p-4 bg-gray-0">
-            <CustomTabs currentTab={currentTab} handleTabChange={handleTabChange}>
-                <CustomTabPanel currentTab={currentTab} tabIndex={0}>
+            <FeedTabs currentTab={currentTab} handleTabChange={handleTabChange}>
+                <FeedTabPanel currentTab={currentTab} tabIndex={0}>
                     <div className="mb-4">
                         <Tweet />
                     </div>
                     <div className="mb-4">
                         <Tweet />
                     </div>
-                </CustomTabPanel>
-                <CustomTabPanel currentTab={currentTab} tabIndex={1}>
+                </FeedTabPanel>
+                <FeedTabPanel currentTab={currentTab} tabIndex={1}>
                     <div className="mb-4">
                         <Tweet />
                     </div>
-                </CustomTabPanel>
-            </CustomTabs>
+                </FeedTabPanel>
+            </FeedTabs>
         </Card>
     );
 }

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     title: "Twitter Clone",
     description: "An over-engineered, low-scope Twitter (X) clone, by Tyler Marshall.",
 };
-const openSans = Open_Sans({ weight: ["400", "700"], subsets: ["latin"] });
+const openSans = Open_Sans({ weight: ["400", "500", "700"], subsets: ["latin"] });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
