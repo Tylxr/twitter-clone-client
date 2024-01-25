@@ -1,13 +1,12 @@
 import { Card } from "@mui/material";
 import ProfileSidebar from "../components/ProfileSidebar";
+import HeaderBar from "../components/HeaderBar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex flex-col justify-start">
             {/* Header */}
-            <div>
-                <div className="w-full h-20 bg-gray-600 text-white">Header bar component</div>
-            </div>
+            <HeaderBar />
 
             {/* Main content section */}
             <div className="bg-black-gradient h-full w-full flex flex-row justify-center items-start">
@@ -15,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <div className="w-1/3 h-full">
                         <div className="m-4">
                             <ProfileSidebar
-                                initial="J"
+                                initial="T"
                                 username="@tylerjeremiahh"
                                 followers="1.3k"
                                 following="57"

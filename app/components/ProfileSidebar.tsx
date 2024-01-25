@@ -15,7 +15,7 @@ export default function ProfileSidebar(props: ProfileSidebarProps) {
     return (
         <div>
             <div className="mb-8 flex flex-row justify-center items-center">
-                <div className="bg-lime-300 h-40 w-40 rounded-full flex flex-row justify-center items-center">
+                <div className="bg-sky-700 h-40 w-40 rounded-full flex flex-row justify-center items-center">
                     <span className="font-bold text-white" style={{ fontSize: 50 }}>
                         {props.initial}
                     </span>

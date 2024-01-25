@@ -8,7 +8,7 @@ export default function Login() {
         <div className="w-screen h-screen">
             <div className="bg-black-gradient h-full w-full text-white flex flex-row justify-between items-center">
                 <div className="w-full flex flex-col justify-center items-center">
-                    <div className="flex flex-col justify-center items-center">
+                    <div className="flex flex-col justify-center items-center cursor-default hover:text-gray-200">
                         <h1 className="text-[70px] m-0" style={{ fontFamily: "Roboto-700" }}>
                             Twitter
                         </h1>
