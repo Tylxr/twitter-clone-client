@@ -12,56 +12,24 @@ export default function Page({ children }: { children: React.ReactNode }) {
         <Card className="p-4 overflow-y-scroll container-scroll">
             <FeedTabs currentTab={currentTab} handleTabChange={handleTabChange}>
                 <FeedTabPanel currentTab={currentTab} tabIndex={0}>
-                    <div className="mb-4">
-                        <Tweet likeCount={19} commentCount={4} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
-                    <div className="mb-4">
-                        <Tweet likeCount={74} commentCount={1} />
-                    </div>
+                    <Tweet likeCount={19} commentCount={4} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
+                    <Tweet likeCount={74} commentCount={1} />
                 </FeedTabPanel>
                 <FeedTabPanel currentTab={currentTab} tabIndex={1}>
-                    <div className="mb-4">
-                        <Tweet likeCount={10} commentCount={8} />
-                    </div>
+                    <Tweet likeCount={10} commentCount={8} />
                 </FeedTabPanel>
             </FeedTabs>
         </Card>
