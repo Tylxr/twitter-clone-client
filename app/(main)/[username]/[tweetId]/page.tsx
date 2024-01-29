@@ -11,14 +11,15 @@ export default function Page({ params }: { params: { tweetId: string } }) {
     const router = useRouter();
 
     return (
-        <div>
-            <div onClick={() => router.back()}>
+        <div className="mt-4">
+            {/* Back button */}
+            <div onClick={() => router.back()} className="w-fit">
                 <span className="cursor-pointer text-white hover:text-gray-200 flex flex-row justify-start items-center mb-6">
                     <FontAwesomeIcon icon={faArrowLeft} className="w-4" />
                     <span className="ml-2">Back</span>
                 </span>
             </div>
-            <Tweet />
+            <Tweet likeCount={52} commentCount={7} />
             <div className="w-full border-white border-solid border-0 border-b"></div>
 
             <Card className="py-4 px-4 my-4">
@@ -31,7 +32,7 @@ export default function Page({ params }: { params: { tweetId: string } }) {
                 </div>
             </Card>
 
-            <Card>
+            <Card className="mb-4">
                 <Comment likeCount={4} />
                 <Comment likeCount={12} />
                 <Comment likeCount={0} />
