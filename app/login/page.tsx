@@ -2,7 +2,7 @@
 import { Card, Button, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 
-export default function Login() {
+export default function Page() {
     const router = useRouter();
     return (
         <div className="w-screen h-screen">
