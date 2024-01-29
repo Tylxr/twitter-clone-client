@@ -40,7 +40,7 @@ export default function Tweet(props: TweetProps) {
                     <div className="ml-6 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600">
                         <FontAwesomeIcon icon={faComment} className="w-4 mr-1" />
                         <span>
-                            {props.commentCount} {props.commentCount === 1 ? "like" : "likes"}
+                            {props.commentCount} {props.commentCount === 1 ? "comment" : "comments"}
                         </span>
                     </div>
                 </div>
