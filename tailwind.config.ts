@@ -20,6 +20,9 @@ const config: Config = {
                 "black-gradient": "linear-gradient(90deg, rgba(11,23,29,1) 0%, rgba(15,42,55,1) 100%)",
             },
         },
+        screens: {
+            xs: "475px",
+        },
     },
     plugins: [],
     corePlugins: {

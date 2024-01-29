@@ -9,9 +9,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <HeaderBar />
 
             {/* Main content section */}
-            <div className="bg-black-gradient h-full w-full flex flex-row justify-center items-start">
-                <div className="w-[1200px] h-full flex flex-row justify-between items-start">
-                    <div className="w-1/3 h-full">
+            <div className="h-full w-full flex flex-row justify-center items-start">
+                <div className="w-[1200px] h-full flex md:flex-row md:justify-between md:items-start flex-col items-center justify-start">
+                    <div className="md:w-1/3 w-full h-full">
                         <div className="m-4">
                             <ProfileSidebar
                                 initial="T"
@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                             />
                         </div>
                     </div>
-                    <div className="w-2/3 h-full">
+                    <div className="md:w-2/3 w-full h-full">
                         <div className="m-4">{children}</div>
                     </div>
                 </div>

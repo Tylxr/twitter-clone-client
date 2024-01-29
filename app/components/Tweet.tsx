@@ -13,18 +13,18 @@ export default function Tweet(props: TweetProps) {
         <Card className="p-4 mb-4 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-center">
                 <div className="w-full h-full flex flex-row justify-between items-start">
-                    <Avatar size="medium" initial="K" classOverride="mr-4" />
+                    <Avatar size="medium" initial="K" classOverride="mr-4 hidden" />
                     <div className="w-full">
                         <div className="w-full flex justify-between">
-                            <div className="mr-4 flex flex-row justify-center items-center">
+                            <div className="mr-4 flex flex-col xs:flex-row justify-center items-start xs:items-center">
                                 <span className="font-bold cursor-pointer hover:text-sky-800">Tyler Marshall</span>
-                                <span className="text-sky-800 text-sm ml-1" style={{ fontFamily: "Roboto-400" }}>
+                                <span className="text-sky-800 text-sm xs:ml-1" style={{ fontFamily: "Roboto-400" }}>
                                     @tylerjeremiahh
                                 </span>
                             </div>
                             <div className="text-xs text-gray-400">8m</div>
                         </div>
-                        <div className="mt-1 text-gray-700">
+                        <div className="mt-1 text-gray-700 text-sm xs:text-md">
                             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore, quo laborum et ducimus
                             quis commodi modi porro nihil! Suscipit illum impedit corrupti? Esse nam quis ullam deserunt
                             delectus accusamus necessitatibus.

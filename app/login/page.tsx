@@ -6,7 +6,7 @@ export default function Page() {
     const router = useRouter();
     return (
         <div className="w-screen h-screen">
-            <div className="bg-black-gradient h-full w-full text-white flex flex-row justify-between items-center">
+            <div className="bg-black-gradient sm:bg-red-500 h-full w-full text-white flex flex-row justify-between items-center">
                 <div className="w-full flex flex-col justify-center items-center">
                     <div className="flex flex-col justify-center items-center cursor-default hover:text-gray-200">
                         <h1 className="text-[70px] m-0" style={{ fontFamily: "Roboto-700" }}>
@@ -16,7 +16,7 @@ export default function Page() {
                             Join the conversation.
                         </p>
                     </div>
-                    <Card className="p-6 m-6 w-[400px] drop-shadow-2xl">
+                    <Card className="p-6 m-6 sm:w-[400px] drop-shadow-2xl">
                         <h3 className="mb-5 mt-0">Welcome to Twitter.</h3>
                         <TextField
                             id="outlined-basic"

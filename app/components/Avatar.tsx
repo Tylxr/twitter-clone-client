@@ -32,7 +32,7 @@ export default function Avatar({ size, initial, classOverride }: AvatarProps) {
 
     return (
         <div
-            className={"rounded-full flex flex-row justify-center items-center " + classOverride}
+            className={"rounded-full xs:flex flex flex-row justify-center items-center " + classOverride}
             style={{
                 minHeight: sizePx,
                 height: sizePx,
