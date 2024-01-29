@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "@mui/material";
+import Avatar from "./Avatar";
 
 interface CommentProps {
     likeCount: number;
@@ -11,7 +12,7 @@ export default function Comment(props: CommentProps) {
         <Card className="px-4 py-2 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-start">
                 <div className="w-full h-full flex flex-row justify-between items-center">
-                    <div className="mr-2 bg-zinc-300 h-[30px] w-[30px] min-h-[30px] min-w-[30px] rounded-full"></div>
+                    <Avatar initial="D" size="small" classOverride="mr-2" />
                     <div className="w-full">
                         <div className="w-full flex justify-between">
                             <div className="mr-4 flex flex-row justify-center items-center">

@@ -3,6 +3,7 @@ import { FeedTabs, FeedTabPanel } from "../components/FeedTabs";
 import Tweet from "../components/Tweet";
 import React, { useState } from "react";
 import { Card } from "@mui/material";
+import Avatar from "../components/Avatar";
 
 export default function Page({ children }: { children: React.ReactNode }) {
     const [currentTab, setTab] = useState(0);

@@ -1,6 +1,7 @@
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card } from "@mui/material";
+import Avatar from "./Avatar";
 
 interface ProfileSidebarProps {
     initial: string;
@@ -15,11 +16,7 @@ export default function ProfileSidebar(props: ProfileSidebarProps) {
     return (
         <div>
             <div className="mb-8 flex flex-row justify-center items-center">
-                <div className="bg-sky-700 h-40 w-40 rounded-full flex flex-row justify-center items-center">
-                    <span className="font-bold text-white" style={{ fontSize: 50 }}>
-                        {props.initial}
-                    </span>
-                </div>
+                <Avatar initial="T" size="huge" />
             </div>
             <div className="mb-8 flex flex-row justify-center items-center">
                 <Card className="flex flex-col justify-center items-center p-4 mr-6">

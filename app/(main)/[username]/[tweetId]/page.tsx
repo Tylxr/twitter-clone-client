@@ -1,16 +1,23 @@
+"use client";
+
 import Comment from "@/app/components/Comment";
 import Tweet from "@/app/components/Tweet";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, TextField } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { tweetId: string } }) {
+    const router = useRouter();
+
     return (
         <div>
-            <span className="cursor-pointer text-white hover:text-gray-200 flex flex-row justify-start items-center mb-6">
-                <FontAwesomeIcon icon={faArrowLeft} className="w-4" />
-                <span className="ml-2">Back</span>
-            </span>
+            <div onClick={() => router.back()}>
+                <span className="cursor-pointer text-white hover:text-gray-200 flex flex-row justify-start items-center mb-6">
+                    <FontAwesomeIcon icon={faArrowLeft} className="w-4" />
+                    <span className="ml-2">Back</span>
+                </span>
+            </div>
             <Tweet />
             <div className="w-full border-white border-solid border-0 border-b"></div>
 

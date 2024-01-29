@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "@mui/material";
+import Avatar from "./Avatar";
 
 interface TweetProps {
     likeCount: number;
@@ -12,7 +13,7 @@ export default function Tweet(props: TweetProps) {
         <Card className="p-4 mb-4 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-center">
                 <div className="w-full h-full flex flex-row justify-between items-start">
-                    <div className="mr-4 bg-sky-100 h-[50px] w-[50px] min-h-[50px] min-w-[50px] rounded-full"></div>
+                    <Avatar size="medium" initial="K" classOverride="mr-4" />
                     <div className="w-full">
                         <div className="w-full flex justify-between">
                             <div className="mr-4 flex flex-row justify-center items-center">

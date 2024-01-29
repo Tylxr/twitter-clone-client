@@ -1,3 +1,4 @@
+import Avatar from "@/app/components/Avatar";
 import Tweet from "@/app/components/Tweet";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card } from "@mui/material";
@@ -40,11 +41,7 @@ export default function Page({ params }: { params: { username: string } }) {
                 </div>
                 <div className="flex flex-col justify-center items-center ml-2">
                     <div className="mb-4 flex flex-row justify-center items-center">
-                        <div className="bg-sky-700 h-[80px] w-[80px] rounded-full flex flex-row justify-center items-center">
-                            <span className="font-bold text-white" style={{ fontSize: 25 }}>
-                                T
-                            </span>
-                        </div>
+                        <Avatar initial="D" size="large" />
                     </div>
 
                     <Button variant="outlined" size="small" className="min-w-[100px] border-white text-white">
