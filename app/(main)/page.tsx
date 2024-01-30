@@ -10,18 +10,20 @@ export default function Page({ children }: { children: React.ReactNode }) {
     const handleTabChange = (event: React.SyntheticEvent, tab: number) => setTab(tab);
 
     return (
-        <div className="md:w-1/3 w-full h-full">
-            <div className="m-4">
-                <ProfileSidebar
-                    initial="T"
-                    username="@tylerjeremiahh"
-                    followers="1.3k"
-                    following="57"
-                    name="Tyler Marshall"
-                    bio="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere repudiandae quasi nam sequi doloremque fugiat omnis inventore cumque deserunt, sapiente suscipit voluptatem veritatis. Placeat autem dolorem magni! Velit, dignissimos commodi!"
-                />
+        <>
+            <div className="w-full h-full md:w-1/3">
+                <div className="m-4">
+                    <ProfileSidebar
+                        initial="T"
+                        username="@tylerjeremiahh"
+                        followers="1.3k"
+                        following="57"
+                        name="Tyler Marshall"
+                        bio="Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facere repudiandae quasi nam sequi doloremque fugiat omnis inventore cumque deserunt, sapiente suscipit voluptatem veritatis. Placeat autem dolorem magni! Velit, dignissimos commodi!"
+                    />
+                </div>
             </div>
-            <div className="md:w-2/3 w-full h-full">
+            <div className="w-full h-full md:w-2/3">
                 <div className="m-4">
                     <Card className="p-4 overflow-y-scroll container-scroll">
                         <FeedTabs currentTab={currentTab} handleTabChange={handleTabChange}>
@@ -49,6 +51,6 @@ export default function Page({ children }: { children: React.ReactNode }) {
                     </Card>
                 </div>
             </div>
-        </div>
+        </>
     );
 }

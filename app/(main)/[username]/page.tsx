@@ -32,8 +32,8 @@ export default function Page({ params }: { params: { username: string } }) {
             </div>
 
             {/* User's profile */}
-            <div className="text-white flex flex-col xs:flex-row xs:justify-between items-center xs:items-start border-white border-solid border-0 border-b pb-4 mb-4">
-                <Card className="p-4 xs:mr-2 max-w-[400px] order-3 xs:order-1">
+            <div className="w-full h-full flex flex-col justify-center items-center md:flex-row md:justify-between md:items-center border-white border-solid border-0 border-b pb-4 mb-4">
+                <Card className="p-4 max-w-[400px] md:max-w-[600px] order-3 md:order-1 md:my-0 my-2">
                     <div className="pb-4 border-gray-200 border-solid border-0 border-b-2">
                         <span className="text-lg font-bold">{params.username}</span>
                     </div>
@@ -42,17 +42,17 @@ export default function Page({ params }: { params: { username: string } }) {
                         <p className="text-sm m-0">{data.bio}</p>
                     </div>
                 </Card>
-                <div className="w-full flex xs:flex-col flex-row justify-center xs:justify-between items-center mx-2 order-2 xs:order-2">
-                    <Card className="flex flex-col justify-center items-center p-4 mx-4 xs:mx-0 xs:mb-2 max-w-[70px]">
+                <div className="flex flex-row justify-between items-center order-2 md:my-0 my-2">
+                    <Card className="flex flex-col justify-center items-center p-4 mx-4 my-2 max-w-[70px] min-w-[70px]">
                         <span className="font-bold text-xl">{data.followers}</span>
                         <span className="text-sm">Followers</span>
                     </Card>
-                    <Card className="flex flex-col justify-center items-center p-4 mx-4 xs:mx-0 xs:mt-2 max-w-[70px]">
+                    <Card className="flex flex-col justify-center items-center p-4 mx-4 my-2 max-w-[70px] min-w-[70px]">
                         <span className="font-bold text-xl">{data.following}</span>
                         <span className="text-sm">Following</span>
                     </Card>
                 </div>
-                <div className="flex flex-col justify-center items-center ml-2 order-1 xs:order-3">
+                <div className="flex flex-col justify-center items-center order-1 md:order-3 md:my-0 my-2">
                     <div className="mb-4 flex flex-row justify-center items-center">
                         <Avatar initial="D" size="large" />
                     </div>

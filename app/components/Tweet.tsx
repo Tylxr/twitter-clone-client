@@ -35,13 +35,19 @@ export default function Tweet(props: TweetProps) {
                     <div className="ml-6 flex flex-row items-center text-sm text-gray-500 hover:text-red-600 cursor-pointer">
                         <FontAwesomeIcon icon={faHeart} className="w-4 mr-1" />
                         <span>
-                            {props.likeCount} {props.likeCount === 1 ? "like" : "likes"}
+                            <span>{props.likeCount}</span>
+                            <span className="hidden xs:inline-block ml-1">
+                                {props.likeCount === 1 ? "like" : "likes"}
+                            </span>
                         </span>
                     </div>
                     <div className="ml-6 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600">
                         <FontAwesomeIcon icon={faComment} className="w-4 mr-1" />
                         <span>
-                            {props.commentCount} {props.commentCount === 1 ? "comment" : "comments"}
+                            <span>{props.commentCount}</span>
+                            <span className="hidden xs:inline-block ml-1">
+                                {props.commentCount === 1 ? "comment" : "comments"}
+                            </span>
                         </span>
                     </div>
                 </div>
