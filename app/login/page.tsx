@@ -1,9 +1,18 @@
 "use client";
+
 import { Card, Button, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { updateToken } from "../store/auth/authSlice";
 
 export default function Page() {
-    const router = useRouter();
+    const token = useAppSelector(({ auth }) => auth.token);
+    const dispatch = useAppDispatch();
+
+    const login = async () => {
+        dispatch(updateToken("new test token"));
+    };
+
     return (
         <div className="w-screen h-screen">
             <div className="bg-black-gradient sm:bg-red-500 h-full w-full text-white flex flex-row justify-between items-center">
@@ -15,6 +24,7 @@ export default function Page() {
                         <p className="text-lg m-0 italic" style={{ fontFamily: "Roboto-300" }}>
                             Join the conversation.
                         </p>
+                        <p>The token: {token}</p>
                     </div>
                     <Card className="p-6 m-6 sm:w-[400px] drop-shadow-2xl">
                         <h3 className="mb-5 mt-0">Welcome to Twitter.</h3>
@@ -42,7 +52,7 @@ export default function Page() {
                                 Register
                             </Button>
                             <Button
-                                onClick={() => router.push("/")}
+                                onClick={() => login()}
                                 variant="outlined"
                                 size="small"
                                 className="mx-4 min-w-[100px] border-black text-black"

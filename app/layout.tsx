@@ -5,6 +5,7 @@ import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 import { Open_Sans } from "next/font/google";
+import StoreProvider from "./store/StoreProvider";
 
 export const metadata: Metadata = {
     title: "Twitter Clone",
@@ -14,10 +15,12 @@ const openSans = Open_Sans({ weight: ["400", "500", "700"], subsets: ["latin"] }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
-        <html lang="en">
-            <body id="__next" className={openSans.className}>
-                {children}
-            </body>
-        </html>
+        <StoreProvider>
+            <html lang="en">
+                <body id="__next" className={openSans.className}>
+                    {children}
+                </body>
+            </html>
+        </StoreProvider>
     );
 }
