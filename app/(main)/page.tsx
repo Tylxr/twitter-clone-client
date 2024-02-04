@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Card } from "@mui/material";
 import ProfileSidebar from "../components/ProfileSidebar";
 
-export default function Page({ children }: { children: React.ReactNode }) {
+export default function Page() {
     const [currentTab, setTab] = useState(0);
     const handleTabChange = (event: React.SyntheticEvent, tab: number) => setTab(tab);
 

@@ -66,11 +66,12 @@ export default function Page({ params }: { params: { username: string } }) {
             {/* User's tweets */}
             {/* TODO: Limit to 5 at a time */}
             <div>
-                <Tweet />
-                <Tweet />
-                <Tweet />
-                <Tweet />
-                <Tweet />
+                <Tweet likeCount={4} commentCount={8} />
+                <Tweet likeCount={4} commentCount={8} />
+                <Tweet likeCount={4} commentCount={8} />
+                <Tweet likeCount={4} commentCount={8} />
+                <Tweet likeCount={4} commentCount={8} />
+                <Tweet likeCount={4} commentCount={8} />
             </div>
         </div>
     );

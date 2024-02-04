@@ -1,16 +1,25 @@
 "use client";
 
 import { Card, Button, TextField } from "@mui/material";
-import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { updateToken } from "../store/auth/authSlice";
+import { authApi } from "../lib/api";
 
 export default function Page() {
     const token = useAppSelector(({ auth }) => auth.token);
     const dispatch = useAppDispatch();
 
     const login = async () => {
-        dispatch(updateToken("new test token"));
+        // dispatch(updateToken("new test token"));
+
+        try {
+            const response = await authApi().post("/login", {
+                username: "",
+                password: "",
+            });
+            debugger;
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
