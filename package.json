@@ -22,7 +22,9 @@
         "next": "14.1.0",
         "react": "^17.0.0 || ^18.0.0",
         "react-dom": "^17.0.0 || ^18.0.0",
-        "react-redux": "^9.1.0"
+        "react-redux": "^9.1.0",
+        "redux-persist": "^6.0.0",
+        "redux-thunk": "^3.1.0"
     },
     "devDependencies": {
         "@types/node": "^20",
