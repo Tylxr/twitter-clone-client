@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authReducer from "./auth/authSlice";
+import authReducer from "./tweet/tweetSlice";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
-import storageSession from "redux-persist/lib/storage/session";
+import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
     key: "root",
-    storage: storageSession,
+    storage,
 };
 
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
