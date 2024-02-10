@@ -1,7 +1,7 @@
 "use client";
 
+import { authFetchClient } from "@/app/lib/authFetch";
 import { Card, Button, TextField } from "@mui/material";
-import { authApi } from "@/app/lib/api";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {
@@ -10,14 +10,17 @@ export default function LoginForm() {
     const login = async () => {
         const { user, pass } = { user: process.env.NEXT_PUBLIC_TEMP_USER, pass: process.env.NEXT_PUBLIC_TEMP_PASS };
         try {
-            const { data }: { data: { error: boolean; token: string } } = await authApi().post("/login", {
-                username: user,
-                password: pass,
+            const response = await authFetchClient("/login", {
+                body: {
+                    username: user,
+                    password: pass,
+                },
             });
-            if (!data.error) {
-                // router.push("/");
+            if (!response?.data.error) {
+                router.push("/");
             }
         } catch (err) {
+            debugger;
             console.log(err);
         }
     };

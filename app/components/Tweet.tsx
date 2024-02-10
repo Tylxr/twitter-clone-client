@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "@mui/material";
 import Avatar from "./Avatar";
+import Link from "next/link";
 
 interface TweetProps {
     likeCount: number;
@@ -16,12 +17,17 @@ export default function Tweet(props: TweetProps) {
                     <Avatar size="medium" initial="K" classOverride="mr-4 hidden" />
                     <div className="w-full">
                         <div className="w-full flex justify-between">
-                            <div className="mr-4 flex flex-col xs:flex-row justify-center items-start xs:items-center">
-                                <span className="font-bold cursor-pointer hover:text-sky-800">Tyler Marshall</span>
+                            <Link
+                                href="/tylerjeremiahh"
+                                className="no-underline text mr-4 flex flex-col xs:flex-row justify-center items-start xs:items-center"
+                            >
+                                <span className="font-bold cursor-pointer hover:text-sky-800 text-gray-700">
+                                    Tyler Marshall
+                                </span>
                                 <span className="text-sky-800 text-sm xs:ml-1" style={{ fontFamily: "Roboto-400" }}>
                                     @tylerjeremiahh
                                 </span>
-                            </div>
+                            </Link>
                             <div className="text-xs text-gray-400">8m</div>
                         </div>
                         <div className="mt-1 text-gray-700 text-sm xs:text-md">

@@ -1,42 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authApi } from "./app/lib/api";
-
-type AuthResponse = { data: { error: boolean; errorMessage?: string; token: string } };
+import { ensureAuthenticated } from "./app/lib/authFetch";
+import { fetchResponse } from "./app/lib/types";
 
 export async function middleware(request: NextRequest) {
     const tokenCookie = request.cookies.get("twitter_token");
     const publicRoutes = ["/login"];
-
     const { pathname } = request.nextUrl;
+    const loginRedirectUrl = request.nextUrl.clone();
+    loginRedirectUrl.pathname = "/login";
 
     // Public route, allow navigation
     if (publicRoutes.includes(pathname)) return NextResponse.next();
 
     // Protected route, ensure user is authenticated
     if (!tokenCookie) {
-        const loginRedirectUrl = request.nextUrl.clone();
-        loginRedirectUrl.pathname = "/login";
         return NextResponse.redirect(loginRedirectUrl);
     }
-    const response: AuthResponse = await authApi().post("/authenticated");
-    if (!response.data.error) {
+    const response: fetchResponse = await ensureAuthenticated(tokenCookie.value);
+    if (response && !response.data.error) {
         return NextResponse.next();
     } else {
-        console.error(response.data.errorMessage);
+        console.error(response?.data.errorMessage || "Error checking user authentication.");
+        return NextResponse.redirect(loginRedirectUrl);
     }
-
-    /**
-     * const publicRoutes = ['/login'];
-     * const route = route;
-     * if !publicRoutes.includes(route)
-     *      - Ensure user is authenticated...
-     *      if !token -> redirect to /login
-     *      else
-     *          call /authenticated
-     */
-    return NextResponse.next();
 }
 
 export const config = {
-    matcher: ["/login", "/"],
+    matcher: [
+        /*
+         * Match all request paths except for the ones starting with:
+         * - api (API routes)
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico (favicon file)
+         */
+        "/((?!api|_next/static|_next/image|favicon.ico).*)",
+    ],
 };
