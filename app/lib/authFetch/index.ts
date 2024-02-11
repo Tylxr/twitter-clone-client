@@ -1,36 +1,48 @@
+import { getCookie } from "cookies-next";
 import { fetchConfig, fetchResponse } from "../types";
-import { requestInterceptor, responseInterceptor } from "./hooks";
 
 export const authFetchClient = async (url: string, config?: Partial<fetchConfig>): Promise<fetchResponse> => {
     if (!url) {
-        console.error("No url supplied to fetchAuth service.");
+        console.error("No url supplied to authFetchClient service.");
         return;
     }
-
-    // Request interceptor
-    const { authHeader } = requestInterceptor(url);
 
     // Request setup
     config ??= {};
     if (!config.headers) config.headers = [];
+    const accessToken = getCookie("twitter_token");
+    const authHeader: [string, string] | undefined = accessToken
+        ? ["Authorization", `Bearer ${accessToken}`]
+        : undefined;
     if (authHeader) config.headers.push(authHeader);
 
     // Perform request
     const response = await authFetch(url, config);
 
-    // Response interceptor
-    const interceptedResponse = response ? responseInterceptor(response) : undefined;
-    return interceptedResponse;
+    return response;
 };
 
-export const ensureAuthenticated = async (accessToken: string) => {
+export const ensureAuthenticated = async (accessToken: string, refreshToken: string) => {
     const authHeader: [string, string] | undefined = accessToken
         ? ["Authorization", `Bearer ${accessToken}`]
         : undefined;
     const config: Partial<fetchConfig> = {};
     if (authHeader) config.headers = [authHeader];
-    const response = await authFetch("/authenticated", config);
-    return response;
+
+    try {
+        // Perform request
+        const response = await authFetch("/authenticated", config);
+
+        if ((response && response.status !== 401) || !refreshToken) return response;
+
+        const refreshResponse = await authFetch("/refresh", {
+            body: { refreshToken },
+        });
+        return refreshResponse;
+    } catch (err) {
+        console.error(err);
+        return undefined;
+    }
 };
 
 // Private fetch wrapper for Auth Service
@@ -45,17 +57,22 @@ const authFetch = async (url: string, config?: Partial<fetchConfig>) => {
     if (config?.headers) headers.push(...config.headers);
 
     // Perform request
-    const response = await fetch(fetchUrl, {
-        headers,
-        credentials: "include",
-        method: config?.method || "POST", // default to POST as this is the most common endpoint type for the auth service
-        body: config?.body ? JSON.stringify(config.body) : "{}",
-    })
-        .then(async (data) => await { status: data.status, data: await data.json() })
-        .catch((err) => {
-            console.error(err);
-            return undefined;
-        });
+    try {
+        const response = await fetch(fetchUrl, {
+            headers,
+            credentials: "include",
+            method: config?.method || "POST", // default to POST as this is the most common endpoint type for the auth service
+            body: config?.body ? JSON.stringify(config.body) : "{}",
+        })
+            .then(async (data) => await { status: data.status, data: await data.json() })
+            .catch((err) => {
+                console.error(err);
+                return undefined;
+            });
 
-    return response;
+        return response;
+    } catch (err) {
+        console.error(err);
+        return undefined;
+    }
 };

@@ -3,7 +3,8 @@ import { ensureAuthenticated } from "./app/lib/authFetch";
 import { fetchResponse } from "./app/lib/types";
 
 export async function middleware(request: NextRequest) {
-    const tokenCookie = request.cookies.get("twitter_token");
+    const tokenCookie = request.cookies.get("twitter_token")?.value || "";
+    const refreshTokenCookie = request.cookies.get("twitter_refresh_token")?.value || "";
     const publicRoutes = ["/login"];
     const { pathname } = request.nextUrl;
     const loginRedirectUrl = request.nextUrl.clone();
@@ -13,12 +14,19 @@ export async function middleware(request: NextRequest) {
     if (publicRoutes.includes(pathname)) return NextResponse.next();
 
     // Protected route, ensure user is authenticated
-    if (!tokenCookie) {
-        return NextResponse.redirect(loginRedirectUrl);
-    }
-    const response: fetchResponse = await ensureAuthenticated(tokenCookie.value);
+    const response: fetchResponse = await ensureAuthenticated(tokenCookie, refreshTokenCookie);
     if (response && !response.data.error) {
-        return NextResponse.next();
+        const resp = NextResponse.next();
+        if (response.data.token && response.data.refreshToken) {
+            resp.cookies.set("twitter_token", response.data.token, {
+                expires: new Date(new Date().getTime() + 60 * 1000),
+            });
+            resp.cookies.set("twitter_refresh_token", response.data.refreshToken, {
+                expires: new Date(new Date().getTime() + 60 * 60 * 24 * 1000),
+                httpOnly: true,
+            });
+        }
+        return resp;
     } else {
         console.error(response?.data.errorMessage || "Error checking user authentication.");
         return NextResponse.redirect(loginRedirectUrl);
