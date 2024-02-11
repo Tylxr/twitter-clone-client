@@ -5,13 +5,19 @@ import { fetchResponse } from "./app/lib/types";
 export async function middleware(request: NextRequest) {
     const tokenCookie = request.cookies.get("twitter_token")?.value || "";
     const refreshTokenCookie = request.cookies.get("twitter_refresh_token")?.value || "";
-    const publicRoutes = ["/login"];
     const { pathname } = request.nextUrl;
+
+    // Redirects
     const loginRedirectUrl = request.nextUrl.clone();
     loginRedirectUrl.pathname = "/login";
+    const mainRedirectUrl = request.nextUrl.clone();
+    mainRedirectUrl.pathname = "/";
 
-    // Public route, allow navigation
-    if (publicRoutes.includes(pathname)) return NextResponse.next();
+    // Handle /login navigation
+    if (pathname === "/login") {
+        if (!refreshTokenCookie) return NextResponse.next();
+        return NextResponse.redirect(mainRedirectUrl);
+    }
 
     // Protected route, ensure user is authenticated
     const response: fetchResponse = await ensureAuthenticated(tokenCookie, refreshTokenCookie);
