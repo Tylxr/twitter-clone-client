@@ -1,6 +1,8 @@
 "use client";
 
 import { authFetchClient } from "@/app/lib/authFetch";
+import { setUser } from "@/app/store/app/appSlice";
+import { useAppDispatch } from "@/app/store/hooks";
 import {
     faArrowLeft,
     faChevronRight,
@@ -15,11 +17,11 @@ import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import { FieldValues, useForm } from "react-hook-form";
 
 export default function LoginForm() {
+    const dispatch = useAppDispatch();
     const {
         register,
         handleSubmit,
         formState: { errors, isSubmitting },
-        reset,
     } = useForm();
     const router = useRouter();
     const loginError = (message: string = "Oops, something went wrong.") => {
@@ -29,6 +31,7 @@ export default function LoginForm() {
     // Login functionality
     const loginUser = handleSubmit(async (data: FieldValues) => await login(data.username, data.password));
     const login = async (username: string, password: string) => {
+        username = username.toLowerCase();
         try {
             const loginResponse = await authFetchClient("/login", {
                 body: {
@@ -39,6 +42,7 @@ export default function LoginForm() {
             if (!loginResponse || loginResponse.data.error) {
                 return loginError(loginResponse?.data.errorMessage);
             }
+            dispatch(setUser(username));
             return router.push("/");
         } catch (err) {
             console.error(err);

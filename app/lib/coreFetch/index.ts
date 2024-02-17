@@ -30,7 +30,7 @@ export default async function coreFetch(url: string, config?: Partial<fetchConfi
         headers,
         credentials: "include",
         method: config?.method || "POST", // default to POST
-        body: config?.body ? JSON.stringify(config.body) : "{}",
+        // body: config?.body ? JSON.stringify(config.body) : "{}",
     })
         .then(async (data) => await { status: data.status, data: await data.json() })
         .catch((err) => {

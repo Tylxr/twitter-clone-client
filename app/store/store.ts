@@ -1,19 +1,24 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./tweet/tweetSlice";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import tweetSlice from "./tweet/tweetSlice";
+import appSlice from "./app/appSlice";
 
 const persistConfig = {
     key: "root",
     storage,
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
+const combinedReducer = combineReducers({
+    app: appSlice,
+    tweet: tweetSlice,
+});
+
+const persistedReducers = persistReducer(persistConfig, combinedReducer);
 
 export const store = configureStore({
-    reducer: {
-        auth: persistedAuthReducer,
-    },
+    reducer: persistedReducers,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: {

@@ -2,6 +2,9 @@ import { faPencil } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card } from "@mui/material";
 import Avatar from "./Avatar";
+import { useEffect } from "react";
+import coreFetch from "../lib/coreFetch";
+import { useAppSelector } from "../store/hooks";
 
 interface ProfileSidebarProps {
     initial: string;
@@ -13,6 +16,24 @@ interface ProfileSidebarProps {
 }
 
 export default function ProfileSidebar(props: ProfileSidebarProps) {
+    const username = useAppSelector(({ app }) => app.username);
+
+    useEffect(() => {
+        const getProfileData = async () => {
+            try {
+                debugger;
+                const userProfile = await coreFetch(`/${username}`, { method: "GET" });
+                console.log(userProfile);
+                debugger;
+            } catch (err) {
+                debugger;
+                console.error(err);
+            }
+        };
+
+        getProfileData();
+    }, [username]);
+
     return (
         <div>
             <div className="mb-8 flex flex-row justify-center items-center">
