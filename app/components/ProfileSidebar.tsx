@@ -22,7 +22,7 @@ export default function ProfileSidebar(props: ProfileSidebarProps) {
         const getProfileData = async () => {
             try {
                 debugger;
-                const userProfile = await coreFetch(`/${username}`, { method: "GET" });
+                const userProfile = await coreFetch(`/userProfile/${username}`, { method: "GET" });
                 console.log(userProfile);
                 debugger;
             } catch (err) {
