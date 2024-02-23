@@ -56,13 +56,16 @@ const authFetch = async (url: string, config?: Partial<fetchConfig>) => {
     const headers: HeadersInit = [["Content-Type", "application/json"]];
     if (config?.headers) headers.push(...config.headers);
 
+    // Setup method
+    const method = config?.method || "POST"; // default to POST
+
     // Perform request
     try {
         const response = await fetch(fetchUrl, {
             headers,
+            method,
+            [method === "GET" ? "query" : "body"]: config?.body ? JSON.stringify(config.body) : "{}",
             credentials: "include",
-            method: config?.method || "POST", // default to POST as this is the most common endpoint type for the auth service
-            body: config?.body ? JSON.stringify(config.body) : "{}",
         })
             .then(async (data) => await { status: data.status, data: await data.json() })
             .catch((err) => {

@@ -25,12 +25,15 @@ export default async function coreFetch(url: string, config?: Partial<fetchConfi
     }
     headers.push(authHeader);
 
+    // Setup method
+    const method = config?.method || "POST"; // default to POST
+
     // Perform request
     return await fetch(fetchUrl, {
         headers,
+        method,
+        [method === "GET" ? "query" : "body"]: config?.body ? JSON.stringify(config.body) : "{}",
         credentials: "include",
-        method: config?.method || "POST", // default to POST
-        // body: config?.body ? JSON.stringify(config.body) : "{}",
     })
         .then(async (data) => await { status: data.status, data: await data.json() })
         .catch((err) => {

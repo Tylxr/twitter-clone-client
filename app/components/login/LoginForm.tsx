@@ -3,13 +3,7 @@
 import { authFetchClient } from "@/app/lib/authFetch";
 import { setUser } from "@/app/store/app/appSlice";
 import { useAppDispatch } from "@/app/store/hooks";
-import {
-    faArrowLeft,
-    faChevronRight,
-    faChevronUp,
-    faCircleArrowRight,
-    faSpinner,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChevronRight, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, Button, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -24,8 +18,8 @@ export default function LoginForm() {
         formState: { errors, isSubmitting },
     } = useForm();
     const router = useRouter();
-    const loginError = (message: string = "Oops, something went wrong.") => {
-        enqueueSnackbar(message, { variant: "error" });
+    const loginError = (message?: string) => {
+        enqueueSnackbar(message || "Oops, something went wrong.", { variant: "error" });
     };
 
     // Login functionality
@@ -66,7 +60,6 @@ export default function LoginForm() {
             // Success... login!
             await login(data.username, data.password);
         } catch (err) {
-            debugger;
             console.error(err);
             return loginError();
         }
