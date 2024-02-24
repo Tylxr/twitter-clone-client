@@ -31,16 +31,12 @@ export default function Feed(feedProps: FeedProps) {
             if (feed.length === 0) return;
 
             try {
-                console.log("Calling /check");
                 const response = await coreFetch("/feed/fromAll/check", {
                     method: "POST",
                     body: { tweetId: feed[feed.length - 1]?._id },
                 });
                 if (response && response.status === 200 && response.data.latest === false) {
-                    console.log("Latest is false, updating feed!");
                     setUpdateKey(updateKey + 1);
-                } else {
-                    console.log("Feed is showing latest tweet!");
                 }
             } catch (err) {
                 console.error(err);
