@@ -7,3 +7,12 @@ export type fetchConfig = {
 export type fetchResponse = { status: number; data: any } | undefined;
 
 export type AuthRequestInterceptor = { fetchUrl: string; authHeader: [string, string] };
+
+export type Tweet = {
+    body: string;
+    comments: string[];
+    createdDate: string;
+    likes: string[];
+    userProfile: { username: string; name: string };
+    _id: string;
+};

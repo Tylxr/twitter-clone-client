@@ -1,12 +1,12 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "@mui/material";
+import { Tweet } from "@/app/lib/types";
 import Avatar from "./Avatar";
 import Link from "next/link";
 
 interface TweetProps {
-    likeCount: number;
-    commentCount: number;
+    data: Tweet;
 }
 
 export default function Tweet(props: TweetProps) {
@@ -14,7 +14,11 @@ export default function Tweet(props: TweetProps) {
         <Card className="p-4 mb-4 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-center">
                 <div className="w-full h-full flex flex-row justify-between items-start">
-                    <Avatar size="medium" initial="K" classOverride="mr-4 hidden" />
+                    <Avatar
+                        size="medium"
+                        initial={props.data.userProfile.name?.[0]?.toUpperCase() || ""}
+                        classOverride="mr-4 hidden"
+                    />
                     <div className="w-full">
                         <div className="w-full flex justify-between">
                             <Link
@@ -22,37 +26,33 @@ export default function Tweet(props: TweetProps) {
                                 className="no-underline text mr-4 flex flex-col xs:flex-row justify-center items-start xs:items-center"
                             >
                                 <span className="font-bold cursor-pointer hover:text-sky-800 text-gray-700">
-                                    Tyler Marshall
+                                    {props.data.userProfile.name}
                                 </span>
                                 <span className="text-sky-800 text-sm xs:ml-1" style={{ fontFamily: "Roboto-400" }}>
-                                    @tylerjeremiahh
+                                    @{props.data.userProfile.username}
                                 </span>
                             </Link>
                             <div className="text-xs text-gray-400">8m</div>
                         </div>
-                        <div className="mt-1 text-gray-700 text-sm xs:text-md">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore, quo laborum et ducimus
-                            quis commodi modi porro nihil! Suscipit illum impedit corrupti? Esse nam quis ullam deserunt
-                            delectus accusamus necessitatibus.
-                        </div>
+                        <div className="mt-1 text-gray-700 text-sm xs:text-md">{props.data.body}</div>
                     </div>
                 </div>
                 <div className="mt-4 mb-1 w-full h-full flex flex-row justify-end items-center">
                     <div className="ml-6 flex flex-row items-center text-sm text-gray-500 hover:text-red-600 cursor-pointer">
                         <FontAwesomeIcon icon={faHeart} className="w-4 mr-1" />
                         <span>
-                            <span>{props.likeCount}</span>
+                            <span>{props.data.likes.length}</span>
                             <span className="hidden xs:inline-block ml-1">
-                                {props.likeCount === 1 ? "like" : "likes"}
+                                {props.data.likes.length === 1 ? "like" : "likes"}
                             </span>
                         </span>
                     </div>
                     <div className="ml-6 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600">
                         <FontAwesomeIcon icon={faComment} className="w-4 mr-1" />
                         <span>
-                            <span>{props.commentCount}</span>
+                            <span>{props.data.comments.length}</span>
                             <span className="hidden xs:inline-block ml-1">
-                                {props.commentCount === 1 ? "comment" : "comments"}
+                                {props.data.comments.length === 1 ? "comment" : "comments"}
                             </span>
                         </span>
                     </div>
