@@ -24,7 +24,7 @@ export default function Page() {
                                 <Feed source="main" />
                             </FeedTabPanel>
                             <FeedTabPanel currentTab={currentTab} tabIndex={1}>
-                                <Feed source="following" />
+                                {/* <Feed source="following" /> */}
                             </FeedTabPanel>
                         </FeedTabs>
                     </Card>
