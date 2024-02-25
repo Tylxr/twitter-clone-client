@@ -27,7 +27,8 @@ export default function Feed(feedProps: FeedProps) {
     }, [getData, dispatch, updateKey]);
 
     useEffect(() => {
-        setInterval(async () => {
+        // Polling to check for new tweets
+        const polling = setInterval(async () => {
             if (feed.length === 0) return;
 
             try {
@@ -41,12 +42,12 @@ export default function Feed(feedProps: FeedProps) {
             } catch (err) {
                 console.error(err);
             }
-        }, 15000);
+        }, 30000);
 
-        // return () => {
-        //     clearInterval(polling);
-        // };
-    }, [updateKey]);
+        return () => {
+            clearInterval(polling);
+        };
+    }, [updateKey, feed]);
 
     return <div>{feed?.map((tweet, i) => <Tweet key={tweet._id} data={tweet} />)}</div>;
 }
