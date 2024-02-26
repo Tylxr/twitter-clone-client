@@ -22,7 +22,7 @@ export default function Tweet(props: TweetProps) {
                     <div className="w-full">
                         <div className="w-full flex justify-between">
                             <Link
-                                href="/tylerjeremiahh"
+                                href={`/${props.data.userProfile.username}`}
                                 className="no-underline text mr-4 flex flex-col xs:flex-row justify-center items-start xs:items-center"
                             >
                                 <span className="font-bold cursor-pointer hover:text-sky-800 text-gray-700">

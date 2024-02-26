@@ -1,16 +1,16 @@
 type CustomEventWithData<T> = CustomEvent & { detail: T };
 
-function subscribe<T>(eventName: string, listener: (event: CustomEventWithData<T>) => void) {
+function subscribe<T>(eventName: string, listener?: (event: CustomEventWithData<T>) => void) {
     document.addEventListener(eventName, (evt: Event) => {
-        if (evt instanceof CustomEvent) {
+        if (evt instanceof CustomEvent && !!listener) {
             listener(evt as CustomEventWithData<T>);
         }
     });
 }
 
-function unsubscribe<T>(eventName: string, listener: (event: CustomEventWithData<T>) => void) {
+function unsubscribe<T>(eventName: string, listener?: (event: CustomEventWithData<T>) => void) {
     document.removeEventListener(eventName, (evt: Event) => {
-        if (evt instanceof CustomEvent) {
+        if (evt instanceof CustomEvent && !!listener) {
             listener(evt as CustomEventWithData<T>);
         }
     });

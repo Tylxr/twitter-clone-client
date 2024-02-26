@@ -86,7 +86,7 @@ export default function ProfileSidebar() {
     return (
         <SnackbarProvider autoHideDuration={3000}>
             <div className="mb-8 flex flex-row justify-center items-center">
-                <Avatar initial="T" size="huge" />
+                <Avatar initial={localData.username[0]?.toUpperCase()} size="huge" />
             </div>
             <div className="mb-8 flex flex-row justify-center items-center">
                 <Card className="flex flex-col justify-center items-center p-4 mr-6">

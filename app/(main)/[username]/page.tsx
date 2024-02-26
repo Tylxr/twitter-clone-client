@@ -14,7 +14,7 @@ export default function Page({ params }: { params: { username: string } }) {
         following: "356",
         initial: "L",
         bio: "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dicta doloremque sunt neque id veniam! Nesciunt, quod dolore, corporis adipisci labore deserunt repudiandae facere explicabo illum expedita laudantium quia animi exercitationem.",
-        name: "Lauren Addison",
+        name: "Firstname Surname",
     };
 
     if (!data) {
@@ -65,14 +65,7 @@ export default function Page({ params }: { params: { username: string } }) {
 
             {/* User's tweets */}
             {/* TODO: Limit to 5 at a time */}
-            <div>
-                <Tweet likeCount={4} commentCount={8} />
-                <Tweet likeCount={4} commentCount={8} />
-                <Tweet likeCount={4} commentCount={8} />
-                <Tweet likeCount={4} commentCount={8} />
-                <Tweet likeCount={4} commentCount={8} />
-                <Tweet likeCount={4} commentCount={8} />
-            </div>
+            <div className="text-red-500">TODO: Pull tweets</div>
         </div>
     );
 }

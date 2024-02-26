@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { setMainFeed } from "@/app/store/tweet/tweetSlice";
 import Tweet from "../Tweet";
 import coreFetch from "@/app/lib/coreFetch";
-import { publish } from "@/app/lib/events";
+import { publish, subscribe, unsubscribe } from "@/app/lib/events";
 
 export type FeedProps = {
     source: "main" | "following" | "user";
@@ -12,24 +12,30 @@ export type FeedProps = {
 };
 
 export default function Feed(feedProps: FeedProps) {
+    // Store, state, etc
     const [updateKey, setUpdateKey] = useState(0);
     const dispatch = useAppDispatch();
     const feed = useAppSelector(({ tweet }) => tweet.mainFeed);
     const getData = getDataRequestBySource(feedProps.source);
 
+    // Lifecycle hooks
     useEffect(() => {
         const fetchData = async () => {
             const { error, feed } = await getData();
             if (!error) {
                 dispatch(setMainFeed(feed));
             }
-
-            setTimeout(() => {
-                console.log("Emitting...");
-                publish("test", 123);
-            }, 5000);
         };
         fetchData();
+
+        // Listen for new tweet creation event
+        subscribe("post_created", async () => {
+            await fetchData();
+        });
+
+        return () => {
+            unsubscribe("post_created");
+        };
     }, [getData, dispatch, updateKey]);
 
     useEffect(() => {
