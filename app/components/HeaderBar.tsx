@@ -1,10 +1,23 @@
 "use client";
 import { Button, Card, Modal, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { subscribe, unsubscribe } from "../lib/events";
 
 export default function HeaderBar() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const createPost = () => setModalIsOpen(false);
+
+    useEffect(() => {
+        subscribe("test", ({ detail }) => {
+            console.log("my value is " + detail);
+            debugger;
+            return true;
+        });
+
+        return () => {
+            unsubscribe("test", () => {});
+        };
+    }, []);
 
     return (
         <div className="bg-black-gradient w-full py-4 mb-2 flex flex-row justify-center items-center border-white border-solid border-0 border-b">

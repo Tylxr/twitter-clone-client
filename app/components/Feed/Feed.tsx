@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { setMainFeed } from "@/app/store/tweet/tweetSlice";
 import Tweet from "../Tweet";
 import coreFetch from "@/app/lib/coreFetch";
+import { publish } from "@/app/lib/events";
 
 export type FeedProps = {
     source: "main" | "following" | "user";
@@ -22,6 +23,11 @@ export default function Feed(feedProps: FeedProps) {
             if (!error) {
                 dispatch(setMainFeed(feed));
             }
+
+            setTimeout(() => {
+                console.log("Emitting...");
+                publish("test", 123);
+            }, 5000);
         };
         fetchData();
     }, [getData, dispatch, updateKey]);
@@ -34,7 +40,7 @@ export default function Feed(feedProps: FeedProps) {
             try {
                 const response = await coreFetch("/feed/fromAll/check", {
                     method: "POST",
-                    body: { tweetId: feed[feed.length - 1]?._id },
+                    body: { tweetId: feed[0]?._id },
                 });
                 if (response && response.status === 200 && response.data.latest === false) {
                     setUpdateKey(updateKey + 1);
