@@ -5,16 +5,19 @@ import { FieldValues, useForm } from "react-hook-form";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import coreFetch from "../lib/coreFetch";
 import { publish } from "../lib/events";
+import { useRouter, usePathname } from "next/navigation";
 
-export default function HeaderBar() {
+export default function HeaderBar(props: unknown) {
     // Store, state, etc
+    const router = useRouter();
+    const pathname = usePathname();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [saving, setSaving] = useState(false);
     const {
         register,
         handleSubmit,
         reset,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm();
 
     // Functions
@@ -38,6 +41,9 @@ export default function HeaderBar() {
             showError();
         } finally {
             setSaving(false);
+            if (pathname !== "/") {
+                router.push("/");
+            }
         }
     };
 
