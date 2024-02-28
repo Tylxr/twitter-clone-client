@@ -4,12 +4,54 @@ import { Card } from "@mui/material";
 import { Tweet } from "@/app/lib/types";
 import Avatar from "./Avatar";
 import Link from "next/link";
+import coreFetch from "../lib/coreFetch";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { toggleLikeOnTweet } from "../store/tweet/tweetSlice";
 
 interface TweetProps {
     data: Tweet;
+    source: "main" | "following" | "user";
 }
 
 export default function Tweet(props: TweetProps) {
+    const dispatch = useAppDispatch();
+    const currentUser = useAppSelector(({ app }) => app.username);
+    const liked = props.data.likes.includes(currentUser as string);
+
+    const toggleLike = async () => {
+        try {
+            // Immediately fill toggle like/dislike for UX responsivity
+            dispatch(
+                toggleLikeOnTweet({
+                    source: props.source,
+                    tweetId: props.data._id,
+                    username: currentUser as string,
+                })
+            );
+            const response = await coreFetch(`/tweet/${props.data._id}/like`, { method: "PATCH" });
+            if (!response || response.data.error) {
+                // Revert toggle of like
+                dispatch(
+                    toggleLikeOnTweet({
+                        source: props.source,
+                        tweetId: props.data._id,
+                        username: currentUser as string,
+                    })
+                );
+            }
+        } catch (err) {
+            console.error(err);
+            // Revert toggle of like
+            dispatch(
+                toggleLikeOnTweet({
+                    source: props.source,
+                    tweetId: props.data._id,
+                    username: currentUser as string,
+                })
+            );
+        }
+    };
+
     return (
         <Card className="p-4 mb-4 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-center">
@@ -38,8 +80,11 @@ export default function Tweet(props: TweetProps) {
                     </div>
                 </div>
                 <div className="mt-4 mb-1 w-full h-full flex flex-row justify-end items-center">
-                    <div className="ml-6 flex flex-row items-center text-sm text-gray-500 hover:text-red-600 cursor-pointer">
-                        <FontAwesomeIcon icon={faHeart} className="w-4 mr-1" />
+                    <div
+                        onClick={() => toggleLike()}
+                        className={`ml-8 flex flex-row items-center text-sm text-gray-500 hover:text-red-400 cursor-pointer ${liked && "text-red-600"}`}
+                    >
+                        <FontAwesomeIcon size="lg" icon={faHeart} className="mr-2" />
                         <span>
                             <span>{props.data.likes.length}</span>
                             <span className="hidden xs:inline-block ml-1">
@@ -47,8 +92,8 @@ export default function Tweet(props: TweetProps) {
                             </span>
                         </span>
                     </div>
-                    <div className="ml-6 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600">
-                        <FontAwesomeIcon icon={faComment} className="w-4 mr-1" />
+                    <div className="ml-8 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600">
+                        <FontAwesomeIcon size="lg" icon={faComment} className="mr-2" />
                         <span>
                             <span>{props.data.comments.length}</span>
                             <span className="hidden xs:inline-block ml-1">

@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { setMainFeed } from "@/app/store/tweet/tweetSlice";
 import Tweet from "../Tweet";
 import coreFetch from "@/app/lib/coreFetch";
-import { publish, subscribe, unsubscribe } from "@/app/lib/events";
+import { subscribe, unsubscribe } from "@/app/lib/events";
 
 export type FeedProps = {
     source: "main" | "following" | "user";
@@ -61,5 +61,5 @@ export default function Feed(feedProps: FeedProps) {
         };
     }, [updateKey, feed]);
 
-    return <div>{feed?.map((tweet, i) => <Tweet key={tweet._id} data={tweet} />)}</div>;
+    return <div>{feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={feedProps.source} />)}</div>;
 }
