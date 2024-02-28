@@ -5,17 +5,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, TextField } from "@mui/material";
 import { useState } from "react";
 import { useAppSelector } from "../store/hooks";
-import { useForm } from "react-hook-form";
+import { FieldValues, useForm } from "react-hook-form";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
+import Skeleton from "react-loading-skeleton";
 
 export default function ProfileSidebar() {
     // Store, state, etc
     const username = useAppSelector(({ app }) => app.username);
+    const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [editable, setEditable] = useState(false);
     const [localData, setLocalData] = useState({
-        followersFormatted: "",
-        followingFormatted: "",
+        followersFormatted: "0",
+        followingFormatted: "0",
         username: "",
         name: "",
         bio: "",
@@ -40,6 +42,7 @@ export default function ProfileSidebar() {
 
             if (userProfileResponse && userProfileResponse.status === 200) {
                 setLocalData(userProfileResponse.data.userProfile);
+                setLoading(false);
                 return userProfileResponse.data.userProfile;
             } else {
                 console.error(
@@ -48,17 +51,19 @@ export default function ProfileSidebar() {
                         : "An error occurred trying to get the user profile data."
                 );
 
+                setLoading(false);
                 return {};
             }
         } catch (err) {
             console.error(err);
+            setLoading(false);
             return {};
         }
     };
 
     // Handle saving the form
-    const handleSave = handleSubmit(async (data: { bio: string; name: string }) => await save(data));
-    const save = async ({ bio, name }: { bio: string; name: string }) => {
+    const handleSave = handleSubmit(async (data: FieldValues) => await save(data));
+    const save = async ({ bio, name }: FieldValues) => {
         setSaving(true);
         try {
             const saveResponse = await coreFetch("/userProfile", {
@@ -90,11 +95,11 @@ export default function ProfileSidebar() {
             </div>
             <div className="mb-8 flex flex-row justify-center items-center">
                 <Card className="flex flex-col justify-center items-center p-4 mr-6">
-                    <span className="font-bold text-xl">{localData.followersFormatted || 0}</span>
+                    <span className="font-bold text-xl">{localData.followersFormatted}</span>
                     <span className="text-sm">Followers</span>
                 </Card>
                 <Card className="flex flex-col justify-center items-center p-4 ml-6">
-                    <span className="font-bold text-xl">{localData.followingFormatted || 0}</span>
+                    <span className="font-bold text-xl">{localData.followingFormatted}</span>
                     <span className="text-sm">Following</span>
                 </Card>
             </div>
@@ -109,7 +114,8 @@ export default function ProfileSidebar() {
                         {!saving && <FontAwesomeIcon icon={editable ? faSave : faPencil} className="w-4 text-lg" />}
                     </div>
                     <div className="pb-4 border-gray-200 border-solid border-0 border-b-2">
-                        <span className="text-lg font-bold">{localData.username}</span>
+                        {!loading && <span className="text-lg font-bold">{localData.username}</span>}
+                        {loading && <Skeleton className="w-[190px] h-[28px]" />}
                     </div>
                     {editable && (
                         <form>
@@ -154,10 +160,16 @@ export default function ProfileSidebar() {
                             />
                         </form>
                     )}
-                    {!editable && (
+                    {!editable && !loading && (
                         <div>
                             <p className="mb-1 font-medium">{localData.name}</p>
                             <p className="text-sm m-0">{localData.bio}</p>
+                        </div>
+                    )}
+                    {!editable && loading && (
+                        <div className="mt-4">
+                            <Skeleton className="h-[28px] w-[160px] mb-1" />
+                            <Skeleton className="h-[14px] w-[240px]" count={2} />
                         </div>
                     )}
                 </Card>
