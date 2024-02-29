@@ -1,7 +1,7 @@
 "use client";
 
 import Avatar from "@/app/components/Avatar";
-import { getDataRequestBySource } from "@/app/components/abc/hooks";
+import { getDataRequestBySource } from "@/app/components/feed/hooks";
 import Tweet from "@/app/components/Tweet";
 import coreFetch from "@/app/lib/coreFetch";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
