@@ -1,9 +1,9 @@
 import { getCookie } from "cookies-next";
-import { fetchConfig, fetchResponse } from "../types";
+import { FetchConfig, FetchResponse } from "../types";
 import { authFetchClient } from "../authFetch";
 
 // Private fetch wrapper for Core Service
-export default async function coreFetch(url: string, config?: Partial<fetchConfig>): Promise<fetchResponse> {
+export default async function coreFetch(url: string, config?: Partial<FetchConfig>): Promise<FetchResponse> {
     // Interceptor - ensure access token is present
     let accessToken = getCookie("twitter_token");
     if (!accessToken || jwtAboutToExpire(accessToken)) {

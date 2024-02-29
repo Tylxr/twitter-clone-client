@@ -1,29 +1,23 @@
 import { useEffect, useState } from "react";
-import { getDataRequestBySource } from "./hooks";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { setMainFeed } from "@/app/store/tweet/tweetSlice";
+import { setFeed } from "@/app/store/tweet/tweetSlice";
 import Tweet from "../Tweet";
 import coreFetch from "@/app/lib/coreFetch";
 import { subscribe, unsubscribe } from "@/app/lib/events";
+import { getMainFeedData } from "./hooks";
 
-export type FeedProps = {
-    source: "main" | "following" | "user";
-    userId?: string;
-};
-
-export default function Feed(feedProps: FeedProps) {
+export default function Feed() {
     // Store, state, etc
     const [updateKey, setUpdateKey] = useState(0);
     const dispatch = useAppDispatch();
     const feed = useAppSelector(({ tweet }) => tweet.mainFeed);
-    const getData = getDataRequestBySource(feedProps.source);
 
     // Lifecycle hooks
     useEffect(() => {
         const fetchData = async () => {
-            const { error, feed } = await getData();
+            const { error, feed } = await getMainFeedData();
             if (!error) {
-                dispatch(setMainFeed(feed));
+                dispatch(setFeed({ source: "main", feed }));
             }
         };
         fetchData();
@@ -36,7 +30,7 @@ export default function Feed(feedProps: FeedProps) {
         return () => {
             unsubscribe("post_created");
         };
-    }, [getData, dispatch, updateKey]);
+    }, [dispatch, updateKey]);
 
     useEffect(() => {
         // Polling to check for new tweets
@@ -61,5 +55,5 @@ export default function Feed(feedProps: FeedProps) {
         };
     }, [updateKey, feed]);
 
-    return <div>{feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={feedProps.source} />)}</div>;
+    return <div>{feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={"main"} />)}</div>;
 }

@@ -1,7 +1,7 @@
 import { getCookie } from "cookies-next";
-import { fetchConfig, fetchResponse } from "../types";
+import { FetchConfig, FetchResponse } from "../types";
 
-export const authFetchClient = async (url: string, config?: Partial<fetchConfig>): Promise<fetchResponse> => {
+export const authFetchClient = async (url: string, config?: Partial<FetchConfig>): Promise<FetchResponse> => {
     if (!url) {
         console.error("No url supplied to authFetchClient service.");
         return;
@@ -26,7 +26,7 @@ export const ensureAuthenticated = async (accessToken: string, refreshToken: str
     const authHeader: [string, string] | undefined = accessToken
         ? ["Authorization", `Bearer ${accessToken}`]
         : undefined;
-    const config: Partial<fetchConfig> = {};
+    const config: Partial<FetchConfig> = {};
     if (authHeader) config.headers = [authHeader];
 
     try {
@@ -46,7 +46,7 @@ export const ensureAuthenticated = async (accessToken: string, refreshToken: str
 };
 
 // Private fetch wrapper for Auth Service
-const authFetch = async (url: string, config?: Partial<fetchConfig>) => {
+const authFetch = async (url: string, config?: Partial<FetchConfig>) => {
     // Format url
     const fetchUrl = url.includes("http")
         ? url

@@ -3,7 +3,7 @@ import { FeedTabs, FeedTabPanel } from "../components/FeedTabs";
 import React, { useState } from "react";
 import { Card } from "@mui/material";
 import ProfileSidebar from "../components/ProfileSidebar";
-import Feed from "../components/feed/Feed";
+import FeedFromAll from "../components/feed/FeedFromAll";
 
 export default function Page() {
     const [currentTab, setTab] = useState(0);
@@ -21,7 +21,7 @@ export default function Page() {
                     <Card className="p-4 overflow-y-scroll container-scroll">
                         <FeedTabs currentTab={currentTab} handleTabChange={handleTabChange}>
                             <FeedTabPanel currentTab={currentTab} tabIndex={0}>
-                                <Feed source="main" />
+                                <FeedFromAll />
                             </FeedTabPanel>
                             <FeedTabPanel currentTab={currentTab} tabIndex={1}>
                                 {/* <Feed source="following" /> */}

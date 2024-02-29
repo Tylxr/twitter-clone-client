@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ensureAuthenticated } from "./app/lib/authFetch";
-import { fetchResponse } from "./app/lib/types";
+import { FetchResponse } from "./app/lib/types";
 
 export async function middleware(request: NextRequest) {
     const tokenCookie = request.cookies.get("twitter_token")?.value || "";
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
     }
 
     // Protected route, ensure user is authenticated
-    const response: fetchResponse = await ensureAuthenticated(tokenCookie, refreshTokenCookie);
+    const response: FetchResponse = await ensureAuthenticated(tokenCookie, refreshTokenCookie);
     if (response && !response.data.error) {
         const resp = NextResponse.next();
         if (response.data.token && response.data.refreshToken) {

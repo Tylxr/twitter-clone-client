@@ -1,4 +1,4 @@
-import { Tweet } from "@/app/lib/types";
+import { FeedSource, Tweet } from "@/app/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
@@ -18,11 +18,8 @@ export const tweetSlice = createSlice({
     name: "tweet",
     initialState,
     reducers: {
-        setMainFeed: (state, action: PayloadAction<Tweet[]>) => {
-            state.mainFeed = action.payload;
-        },
-        setFollowingFeed: (state, action: PayloadAction<Tweet[]>) => {
-            state.followingFeed = action.payload;
+        setFeed: (state, action: PayloadAction<{ source: FeedSource; feed: Tweet[] }>) => {
+            state[`${action.payload.source}Feed`] = action.payload.feed;
         },
         toggleLikeOnTweet: (
             state,
@@ -46,7 +43,7 @@ export const tweetSlice = createSlice({
 });
 
 // Export actions
-export const { setMainFeed, setFollowingFeed, toggleLikeOnTweet } = tweetSlice.actions;
+export const { setFeed, toggleLikeOnTweet } = tweetSlice.actions;
 
 // Export reducer
 export default tweetSlice.reducer;

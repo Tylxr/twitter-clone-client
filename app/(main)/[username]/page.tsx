@@ -1,10 +1,11 @@
 "use client";
 
 import Avatar from "@/app/components/Avatar";
-import { getDataRequestBySource } from "@/app/components/feed/hooks";
+import { getUserFeedData } from "@/app/components/feed/hooks";
 import Tweet from "@/app/components/Tweet";
 import coreFetch from "@/app/lib/coreFetch";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
+import { setFeed } from "@/app/store/tweet/tweetSlice";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card } from "@mui/material";
@@ -18,8 +19,7 @@ export default function Page({ params }: { params: { username: string } }) {
     const [loading, setLoading] = useState(true);
     const [invalidUsername, setInvalidUsername] = useState(false);
     const dispatch = useAppDispatch();
-    const feed = useAppSelector(({ tweet }) => tweet.mainFeed);
-    const getData = getDataRequestBySource("user");
+    const feed = useAppSelector(({ tweet }) => tweet.userFeed);
     const [localData, setLocalData] = useState({
         followersFormatted: "0",
         followingFormatted: "0",
@@ -28,11 +28,17 @@ export default function Page({ params }: { params: { username: string } }) {
         bio: "",
     });
 
-    // Get user's feed
-    useEffect(() => {}, []);
-
-    // Get profile data
+    // Lifecycle hooks
     useEffect(() => {
+        // Get user's feed
+        const getFeedData = async () => {
+            const { error, feed } = await getUserFeedData(params.username);
+            if (!error) {
+                dispatch(setFeed({ source: "user", feed }));
+            }
+        };
+
+        // Get profile data
         const getProfileData = async () => {
             try {
                 const userProfileResponse = await coreFetch(`/userProfile/${params.username}`, { method: "GET" });
@@ -54,9 +60,11 @@ export default function Page({ params }: { params: { username: string } }) {
                 setLoading(false);
             }
         };
-        getProfileData();
-    }, [params.username]);
 
+        Promise.allSettled([getFeedData(), getProfileData()]);
+    }, [dispatch, params.username]);
+
+    // Early exit
     if (invalidUsername) {
         return <p className="text-white">No user found with username: {params.username}</p>;
     }
@@ -112,8 +120,7 @@ export default function Page({ params }: { params: { username: string } }) {
             </div>
 
             {/* User's tweets */}
-            {/* TODO: Limit to 5 at a time */}
-            <div className="text-red-500">TODO: Pull tweets</div>
+            <div>{feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={"user"} />)}</div>
         </div>
     );
 }

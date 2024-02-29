@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Card } from "@mui/material";
-import { Tweet } from "@/app/lib/types";
+import { FeedSource, Tweet } from "@/app/lib/types";
 import Avatar from "./Avatar";
 import Link from "next/link";
 import coreFetch from "../lib/coreFetch";
@@ -10,7 +10,7 @@ import { toggleLikeOnTweet } from "../store/tweet/tweetSlice";
 
 interface TweetProps {
     data: Tweet;
-    source: "main" | "following" | "user";
+    source: FeedSource;
 }
 
 export default function Tweet(props: TweetProps) {
