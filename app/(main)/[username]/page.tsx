@@ -1,8 +1,10 @@
 "use client";
 
 import Avatar from "@/app/components/Avatar";
+import { getDataRequestBySource } from "@/app/components/abc/hooks";
 import Tweet from "@/app/components/Tweet";
 import coreFetch from "@/app/lib/coreFetch";
+import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card } from "@mui/material";
@@ -11,9 +13,13 @@ import { useEffect, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 
 export default function Page({ params }: { params: { username: string } }) {
+    // Store, state, etc
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [invalidUsername, setInvalidUsername] = useState(false);
+    const dispatch = useAppDispatch();
+    const feed = useAppSelector(({ tweet }) => tweet.mainFeed);
+    const getData = getDataRequestBySource("user");
     const [localData, setLocalData] = useState({
         followersFormatted: "0",
         followingFormatted: "0",
@@ -22,8 +28,11 @@ export default function Page({ params }: { params: { username: string } }) {
         bio: "",
     });
 
+    // Get user's feed
+    useEffect(() => {}, []);
+
+    // Get profile data
     useEffect(() => {
-        // Get profile data
         const getProfileData = async () => {
             try {
                 const userProfileResponse = await coreFetch(`/userProfile/${params.username}`, { method: "GET" });

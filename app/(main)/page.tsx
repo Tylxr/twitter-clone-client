@@ -3,7 +3,7 @@ import { FeedTabs, FeedTabPanel } from "../components/FeedTabs";
 import React, { useState } from "react";
 import { Card } from "@mui/material";
 import ProfileSidebar from "../components/ProfileSidebar";
-import Feed from "../components/Feed/Feed";
+import Feed from "../components/abc/Feed";
 
 export default function Page() {
     const [currentTab, setTab] = useState(0);
