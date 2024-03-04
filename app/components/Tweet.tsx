@@ -65,12 +65,10 @@ export default function Tweet(props: TweetProps) {
                         <div className="w-full flex justify-between">
                             <Link
                                 href={`/${props.data.userProfile.username}`}
-                                className="no-underline text mr-4 flex flex-col xs:flex-row justify-center items-start xs:items-center"
+                                className="no-underline hover:text-sky-500 text-gray-700 mr-4 flex flex-col xs:flex-row justify-center items-start xs:items-center"
                             >
-                                <span className="font-bold cursor-pointer hover:text-sky-800 text-gray-700">
-                                    {props.data.userProfile.name}
-                                </span>
-                                <span className="text-sky-800 text-sm xs:ml-1" style={{ fontFamily: "Roboto-400" }}>
+                                <span className="font-bold cursor-pointer">{props.data.userProfile.name}</span>
+                                <span className="text-sm xs:ml-1" style={{ fontFamily: "Roboto-400" }}>
                                     @{props.data.userProfile.username}
                                 </span>
                             </Link>

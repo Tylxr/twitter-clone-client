@@ -20,6 +20,7 @@ export default function ProfileSidebar() {
     const [localData, setLocalData] = useState({
         followersFormatted: "0",
         followingFormatted: "0",
+        followers: [],
         username: "",
         name: "",
         bio: "",
@@ -99,7 +100,7 @@ export default function ProfileSidebar() {
             <div className="mb-8 flex flex-row justify-center items-center">
                 <Card className="flex flex-col justify-center items-center p-4 mr-6">
                     <span className="font-bold text-xl">{localData.followersFormatted}</span>
-                    <span className="text-sm">Followers</span>
+                    <span className="text-sm">{localData.followers.length === 1 ? "Follower" : "Followers"}</span>
                 </Card>
                 <Card className="flex flex-col justify-center items-center p-4 ml-6">
                     <span className="font-bold text-xl">{localData.followingFormatted}</span>

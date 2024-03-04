@@ -4,7 +4,6 @@ import Avatar from "@/app/components/Avatar";
 import { getUserFeedData } from "@/app/components/feed/hooks";
 import Tweet from "@/app/components/Tweet";
 import coreFetch from "@/app/lib/coreFetch";
-import { Tweet as TweetType } from "@/app/lib/types";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { getUserFeed, setFeed } from "@/app/store/tweet/tweetSlice";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
@@ -22,59 +21,63 @@ export default function Page({ params }: { params: { username: string } }) {
     const [invalidUsername, setInvalidUsername] = useState(false);
     const username = useAppSelector(({ app }) => app.username);
     const feed = useAppSelector(getUserFeed);
-    const [following, setFollowing] = useState();
+    const [following, setFollowing] = useState(false);
     const [localData, setLocalData] = useState({
         followersFormatted: "0",
         followingFormatted: "0",
+        followers: [],
         username: "",
         name: "",
         bio: "",
     });
     const notOwnProfile = username !== params.username;
 
-    // Lifecycle hooks
-    useEffect(() => {
-        // Get user's feed
-        const getFeedData = async () => {
-            const { error, feed } = await getUserFeedData(params.username);
-            if (!error) {
-                // setFeed(feed);
-                dispatch(setFeed({ source: "user", feed }));
-            }
-        };
+    // Get user's feed
+    const getFeedData = async () => {
+        const { error, feed } = await getUserFeedData(params.username);
+        if (!error) {
+            // setFeed(feed);
+            dispatch(setFeed({ source: "user", feed }));
+        }
+    };
 
-        // Get profile data
-        const getProfileData = async () => {
-            try {
-                const userProfileResponse = await coreFetch(`/userProfile/${params.username}`, { method: "GET" });
+    // Get profile data
+    const getProfileData = async () => {
+        try {
+            const userProfileResponse = await coreFetch(`/userProfile/${params.username}`, { method: "GET" });
 
-                if (userProfileResponse && userProfileResponse.status === 200) {
-                    setLocalData(userProfileResponse.data.userProfile);
-                } else {
-                    console.error(
-                        userProfileResponse
-                            ? userProfileResponse.data.errorMessage
-                            : "An error occurred trying to get the user profile data."
-                    );
-                    setInvalidUsername(true);
-                }
-            } catch (err) {
-                console.error(err);
+            if (userProfileResponse && userProfileResponse.status === 200) {
+                setLocalData(userProfileResponse.data.userProfile);
+                setFollowing(!!userProfileResponse.data.userProfile.followers?.includes(username));
+            } else {
+                console.error(
+                    userProfileResponse
+                        ? userProfileResponse.data.errorMessage
+                        : "An error occurred trying to get the user profile data."
+                );
                 setInvalidUsername(true);
-            } finally {
-                setLoading(false);
             }
-        };
-
-        Promise.allSettled([getFeedData(), getProfileData()]);
-    }, [dispatch, params.username]);
+        } catch (err) {
+            console.error(err);
+            setInvalidUsername(true);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Functions
     const toggleFollow = async () => {
         const response = await coreFetch(`/userProfile/follow/${params.username}`, { method: "PATCH" });
-        if (!response || response.data.error) {
+        if (response && !response.data.error) {
+            setFollowing(!following);
+            await getProfileData();
         }
     };
+
+    // Lifecycle hooks
+    useEffect(() => {
+        Promise.allSettled([getFeedData(), getProfileData()]);
+    }, []);
 
     // Early exit
     if (invalidUsername) {
@@ -114,7 +117,7 @@ export default function Page({ params }: { params: { username: string } }) {
                 <div className="flex flex-row justify-between items-center order-2 md:my-0 my-2">
                     <Card className="flex flex-col justify-center items-center p-4 mx-4 my-2 max-w-[70px] min-w-[70px]">
                         <span className="font-bold text-xl">{localData?.followersFormatted}</span>
-                        <span className="text-sm">Followers</span>
+                        <span className="text-sm">{localData.followers.length === 1 ? "Follower" : "Followers"}</span>
                     </Card>
                     <Card className="flex flex-col justify-center items-center p-4 mx-4 my-2 max-w-[70px] min-w-[70px]">
                         <span className="font-bold text-xl">{localData?.followingFormatted}</span>
@@ -129,9 +132,9 @@ export default function Page({ params }: { params: { username: string } }) {
                     {notOwnProfile && (
                         <Button
                             onClick={() => toggleFollow()}
-                            variant="contained"
+                            variant={following ? "contained" : "outlined"}
                             size="small"
-                            className="min-w-[100px] bg-white border-black text-black"
+                            className="min-w-[100px] bg-white border-black text-black cursor-pointer"
                         >
                             {following ? "Unfollow" : "Follow"}
                         </Button>
