@@ -4,8 +4,9 @@ import Avatar from "@/app/components/Avatar";
 import { getUserFeedData } from "@/app/components/feed/hooks";
 import Tweet from "@/app/components/Tweet";
 import coreFetch from "@/app/lib/coreFetch";
+import { Tweet as TweetType } from "@/app/lib/types";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
-import { setFeed } from "@/app/store/tweet/tweetSlice";
+import { getUserFeed, setFeed } from "@/app/store/tweet/tweetSlice";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card } from "@mui/material";
@@ -15,11 +16,13 @@ import Skeleton from "react-loading-skeleton";
 
 export default function Page({ params }: { params: { username: string } }) {
     // Store, state, etc
+    const dispatch = useAppDispatch();
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     const [invalidUsername, setInvalidUsername] = useState(false);
-    const dispatch = useAppDispatch();
-    const feed = useAppSelector(({ tweet }) => tweet.userFeed);
+    const username = useAppSelector(({ app }) => app.username);
+    const feed = useAppSelector(getUserFeed);
+    const [following, setFollowing] = useState();
     const [localData, setLocalData] = useState({
         followersFormatted: "0",
         followingFormatted: "0",
@@ -27,6 +30,7 @@ export default function Page({ params }: { params: { username: string } }) {
         name: "",
         bio: "",
     });
+    const notOwnProfile = username !== params.username;
 
     // Lifecycle hooks
     useEffect(() => {
@@ -34,6 +38,7 @@ export default function Page({ params }: { params: { username: string } }) {
         const getFeedData = async () => {
             const { error, feed } = await getUserFeedData(params.username);
             if (!error) {
+                // setFeed(feed);
                 dispatch(setFeed({ source: "user", feed }));
             }
         };
@@ -64,6 +69,13 @@ export default function Page({ params }: { params: { username: string } }) {
         Promise.allSettled([getFeedData(), getProfileData()]);
     }, [dispatch, params.username]);
 
+    // Functions
+    const toggleFollow = async () => {
+        const response = await coreFetch(`/userProfile/follow/${params.username}`, { method: "PATCH" });
+        if (!response || response.data.error) {
+        }
+    };
+
     // Early exit
     if (invalidUsername) {
         return <p className="text-white">No user found with username: {params.username}</p>;
@@ -82,8 +94,9 @@ export default function Page({ params }: { params: { username: string } }) {
             {/* User's profile */}
             <div className="w-full h-full flex flex-col justify-center items-center md:flex-row md:justify-between md:items-center border-white border-solid border-0 border-b pb-4 mb-4">
                 <Card className="p-4 w-full max-w-[400px] md:max-w-[600px] order-3 md:order-1 md:my-0 my-2">
-                    <div className="pb-4 border-gray-200 border-solid border-0 border-b-2">
+                    <div className="pb-4 border-gray-200 border-solid border-0 border-b-2 flex flex-row justify-between items-center">
                         <span className="text-lg font-bold">{params.username}</span>
+                        {following && <span className="text-sm italic text-gray-400 ml-2">Following</span>}
                     </div>
                     {!loading && (
                         <div>
@@ -113,14 +126,21 @@ export default function Page({ params }: { params: { username: string } }) {
                         <Avatar initial={localData?.username?.[0]?.toUpperCase()} size="large" />
                     </div>
 
-                    <Button variant="outlined" size="small" className="min-w-[100px] border-white text-white">
-                        Follow
-                    </Button>
+                    {notOwnProfile && (
+                        <Button
+                            onClick={() => toggleFollow()}
+                            variant="contained"
+                            size="small"
+                            className="min-w-[100px] bg-white border-black text-black"
+                        >
+                            {following ? "Unfollow" : "Follow"}
+                        </Button>
+                    )}
                 </div>
             </div>
 
             {/* User's tweets */}
-            <div>{feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={"user"} />)}</div>
+            <div>{feed?.map((tweet) => <Tweet key={tweet?._id} data={tweet} source={"user"} />)}</div>
         </div>
     );
 }

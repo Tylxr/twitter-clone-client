@@ -28,7 +28,8 @@
         "react-loading-skeleton": "^3.4.0",
         "react-redux": "^9.1.0",
         "redux-persist": "^6.0.0",
-        "redux-thunk": "^3.1.0"
+        "redux-thunk": "^3.1.0",
+        "reselect": "^5.1.0"
     },
     "devDependencies": {
         "@types/node": "^20",

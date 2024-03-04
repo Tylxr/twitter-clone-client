@@ -18,3 +18,15 @@ export type Tweet = {
 };
 
 export type FeedSource = "main" | "following" | "user";
+
+export type UserProfile = {
+    _id: string;
+    username: string;
+    name: string;
+    bio: string;
+    followers: Array<string>;
+    following: Array<string>;
+    followersFormatted?: string;
+    followingFormatted: string;
+    createdDate: Date;
+};

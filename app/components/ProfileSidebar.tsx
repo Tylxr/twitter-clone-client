@@ -3,14 +3,16 @@ import coreFetch from "../lib/coreFetch";
 import { faPencil, faSave, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Card, TextField } from "@mui/material";
-import { useState } from "react";
-import { useAppSelector } from "../store/hooks";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { FieldValues, useForm } from "react-hook-form";
 import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import Skeleton from "react-loading-skeleton";
+import { setUserProfile } from "../store/app/appSlice";
 
 export default function ProfileSidebar() {
     // Store, state, etc
+    const dispatch = useAppDispatch();
     const username = useAppSelector(({ app }) => app.username);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -43,6 +45,7 @@ export default function ProfileSidebar() {
             if (userProfileResponse && userProfileResponse.status === 200) {
                 setLocalData(userProfileResponse.data.userProfile);
                 setLoading(false);
+                dispatch(setUserProfile(userProfileResponse.data.userProfile));
                 return userProfileResponse.data.userProfile;
             } else {
                 console.error(
@@ -168,8 +171,8 @@ export default function ProfileSidebar() {
                     )}
                     {!editable && loading && (
                         <div className="mt-4">
-                            <Skeleton className="h-[28px] w-[160px] mb-1" />
-                            <Skeleton className="h-[14px] w-[240px]" count={2} />
+                            <Skeleton className="h-[20px] w-[160px] mb-1" />
+                            <Skeleton className="h-[10px] w-[240px]" count={1} />
                         </div>
                     )}
                 </Card>

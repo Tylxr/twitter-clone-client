@@ -1,6 +1,7 @@
 import { FeedSource, Tweet } from "@/app/lib/types";
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 
 export interface TweetState {
     mainFeed: Tweet[];
@@ -47,3 +48,5 @@ export const { setFeed, toggleLikeOnTweet } = tweetSlice.actions;
 
 // Export reducer
 export default tweetSlice.reducer;
+
+export const getUserFeed = createSelector([(state) => state.tweet], (tweetState: TweetState) => tweetState.userFeed);
