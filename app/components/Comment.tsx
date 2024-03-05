@@ -9,7 +9,7 @@ interface CommentProps {
 
 export default function Comment(props: CommentProps) {
     return (
-        <Card className="px-4 py-2 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
+        <Card className="px-4 py-2 mb-4 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-start">
                 <div className="w-full h-full flex flex-row justify-between items-center">
                     <Avatar initial="D" size="small" classOverride="mr-2" />
