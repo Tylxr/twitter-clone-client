@@ -7,8 +7,8 @@ import Link from "next/link";
 import coreFetch from "../lib/coreFetch";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { toggleLikeOnTweet } from "../store/tweet/tweetSlice";
-import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
+import timePassed from "../lib/utils/timePassed";
 
 interface TweetProps {
     data: Tweet;
@@ -17,8 +17,6 @@ interface TweetProps {
 
 export default function Tweet(props: TweetProps) {
     // Store, state, etc
-    const router = useRouter();
-    const pathname = usePathname();
     const dispatch = useAppDispatch();
     const currentUser = useAppSelector(({ app }) => app.username);
     const [liked, setLiked] = useState<boolean>(props.data.likes.includes(currentUser as string));
@@ -95,7 +93,7 @@ export default function Tweet(props: TweetProps) {
                                     @{props.data.userProfile.username}
                                 </span>
                             </Link>
-                            <div className="text-xs text-gray-400">8m</div>
+                            <div className="text-xs text-gray-400">{timePassed(props.data.createdDate)}</div>
                         </div>
                         <div className="mt-1 text-gray-700 text-sm xs:text-md">{props.data.body}</div>
                     </div>
