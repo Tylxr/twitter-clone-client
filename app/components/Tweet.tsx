@@ -113,7 +113,7 @@ export default function Tweet(props: TweetProps) {
                     </div>
                     <Link
                         href={`/${props.data.userProfile.username}/${props.data._id}`}
-                        className="ml-8 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600"
+                        className="no-underline ml-8 flex flex-row items-center cursor-pointer text-sm text-gray-500 hover:text-sky-600"
                     >
                         <FontAwesomeIcon size="lg" icon={faComment} className="mr-2" />
                         <span>
