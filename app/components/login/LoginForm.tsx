@@ -11,6 +11,7 @@ import { SnackbarProvider, enqueueSnackbar } from "notistack";
 import { FieldValues, useForm } from "react-hook-form";
 
 export default function LoginForm() {
+    // Store, state, etc
     const dispatch = useAppDispatch();
     const {
         register,
@@ -18,6 +19,8 @@ export default function LoginForm() {
         formState: { errors, isSubmitting },
     } = useForm();
     const router = useRouter();
+
+    // Functions
     const loginError = (message?: string) => {
         enqueueSnackbar(message || "Oops, something went wrong.", { variant: "error" });
     };

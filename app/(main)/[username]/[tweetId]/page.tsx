@@ -9,14 +9,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button, Card, TextField } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import Skeleton from "react-loading-skeleton";
 
 export default function Page({ params }: { params: { tweetId: string } }) {
+    // Store, state, etc
     const router = useRouter();
     const [tweet, setTweet] = useState<TypeTweet | undefined>(undefined);
     const [loading, setLoading] = useState<boolean>(true);
     const [hasError, setHasError] = useState<boolean>(false);
 
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors, isSubmitting },
+    } = useForm();
+
+    // Functions
+    const comment = () => handleSubmit(async (data: FieldValues) => await postComment(data.comment));
+    const postComment = (comment: string) => {};
+    const commentCharacters = watch("comment", "");
+
+    // Lifecycle hooks
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
@@ -58,13 +73,43 @@ export default function Page({ params }: { params: { tweetId: string } }) {
             <div className="w-full border-white border-solid border-0 border-b"></div>
 
             <Card className="py-4 px-4 my-4">
-                <TextField label="Comment" multiline minRows={4} fullWidth />
-                <div className="flex flex-row justify-between items-start">
-                    <span className="text-gray-400 text-sm mt-1">59/180 characters</span>
-                    <Button variant="contained" size="small" className="min-w-[100px] bg-sky-900 mt-4">
-                        Post
-                    </Button>
-                </div>
+                <form>
+                    <TextField
+                        {...register("comment", {
+                            required: "Comment is required.",
+                            minLength: {
+                                value: 1,
+                                message: "Comment must be at least 1 character.",
+                            },
+                            maxLength: {
+                                value: 100,
+                                message: "Comment can be up to 100 characters.",
+                            },
+                        })}
+                        disabled={isSubmitting}
+                        label="Comment"
+                        multiline
+                        minRows={4}
+                        error={!!errors.comment}
+                        helperText={errors.comment?.message as string}
+                        fullWidth
+                    />
+                    <div className="flex flex-row justify-between items-start">
+                        <span
+                            className={`text-sm mt-1 ${commentCharacters.length > 100 ? "text-red-500" : "text-gray-400"}`}
+                        >
+                            {commentCharacters.length}/100 characters
+                        </span>
+                        <Button
+                            onClick={() => comment()}
+                            variant="contained"
+                            size="small"
+                            className="min-w-[100px] bg-sky-900 mt-4"
+                        >
+                            Post
+                        </Button>
+                    </div>
+                </form>
             </Card>
 
             <Comment likeCount={4} />
