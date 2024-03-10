@@ -39,7 +39,6 @@ export default function LoginForm() {
             if (!loginResponse || loginResponse.data.error) {
                 return loginError(loginResponse?.data.errorMessage);
             }
-            debugger;
             dispatch(setUser(username));
             return router.push("/");
         } catch (err) {
