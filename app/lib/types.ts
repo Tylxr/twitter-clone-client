@@ -18,6 +18,7 @@ export type Tweet = {
 };
 
 export type Comment = {
+    _id: string;
     userProfile: { username: string; name: string };
     body: string;
     likes: string[];

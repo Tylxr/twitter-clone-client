@@ -14,6 +14,7 @@ import { FieldValues, useForm } from "react-hook-form";
 import Skeleton from "react-loading-skeleton";
 import sortBy from "lodash/sortBy";
 import reverse from "lodash/reverse";
+import { subscribe, unsubscribe } from "@/app/lib/events";
 
 export default function Page({ params }: { params: { tweetId: string } }) {
     // Store, state, etc
@@ -69,6 +70,10 @@ export default function Page({ params }: { params: { tweetId: string } }) {
     useEffect(() => {
         fetchData(false);
     }, [params.tweetId]);
+    useEffect(() => {
+        subscribe("refresh_tweet", async () => await fetchData(true));
+        return () => unsubscribe("refresh_tweet");
+    }, []);
 
     return (
         <SnackbarProvider autoHideDuration={3000}>
@@ -135,7 +140,7 @@ export default function Page({ params }: { params: { tweetId: string } }) {
 
                 {/* Comments */}
                 {reverse(sortBy(tweet?.comments || [], "createdDate")).map((comment: CommentType, i: number) => (
-                    <Comment key={i} data={comment} />
+                    <Comment key={i} data={comment} tweetId={params.tweetId} />
                 ))}
             </div>
         </SnackbarProvider>

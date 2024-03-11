@@ -10,7 +10,7 @@ export default function timePassed(dateStr: string) {
     } else if (difference < 60) {
         return `${difference}m`;
     } else if (difference < 60 * 24) {
-        return `${difference / 60}h`;
+        return `${Math.floor(difference / 60)}h`;
     } else if (difference < 60 * 24 * 2) {
         return "a day ago";
     } else if (difference < 60 * 24 * 7) {

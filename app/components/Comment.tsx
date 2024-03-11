@@ -4,12 +4,48 @@ import { Card } from "@mui/material";
 import Avatar from "./Avatar";
 import { Comment } from "../lib/types";
 import timePassed from "../lib/utils/timePassed";
+import { useAppSelector } from "../store/hooks";
+import { useState } from "react";
+import coreFetch from "../lib/coreFetch";
+import { publish } from "../lib/events";
 
 interface CommentProps {
+    tweetId: string;
     data: Comment;
 }
 
 export default function Comment(props: CommentProps) {
+    // Store, state, etc
+    const currentUser = useAppSelector(({ app }) => app.username as string);
+    const [liked, setLiked] = useState<boolean>(props.data.likes.includes(currentUser));
+    const [likes, setLikes] = useState<string[]>(props.data.likes);
+
+    // Functions
+    const toggleLike = async () => {
+        try {
+            // Immediately fill toggle like/dislike for UX responsivity
+            setLiked(!liked);
+            setLikes(
+                likes.includes(currentUser as string)
+                    ? likes.filter((l) => l !== currentUser)
+                    : [...likes, currentUser as string]
+            );
+
+            // Perform request
+            const response = await coreFetch(`/tweet/${props.tweetId}/comment/${props.data._id}/like/`, {
+                method: "PATCH",
+            });
+            if (!response || response.data.error) {
+                setLiked(!liked);
+            } else {
+                publish("refresh_tweet", null);
+            }
+        } catch (err) {
+            console.error(err);
+            setLiked(!liked);
+        }
+    };
+
     return (
         <Card className="px-4 py-2 mb-4 hover:cursor-pointer hover:bg-gray-50 border border-solid border-gray-100">
             <div className="flex flex-col justify-between items-start">
@@ -31,10 +67,13 @@ export default function Comment(props: CommentProps) {
                 </div>
                 <div className="mt-2 text-gray-700 text-sm">{props.data.body}</div>
                 <div className="mt-2 mb-1 w-full h-full flex flex-row justify-end items-center">
-                    <div className="ml-6 flex flex-row items-center text-sm text-gray-500 hover:text-red-600 cursor-pointer">
+                    <div
+                        onClick={() => toggleLike()}
+                        className={`ml-8 flex flex-row items-center text-sm text-gray-500 hover:text-red-400 cursor-pointer ${liked && "text-red-600"}`}
+                    >
                         <FontAwesomeIcon icon={faHeart} className="w-4 mr-1" />
                         <span>
-                            {props.data.likes.length} {props.data.likes.length === 1 ? "like" : "likes"}
+                            {likes.length} {likes.length === 1 ? "like" : "likes"}
                         </span>
                     </div>
                 </div>
