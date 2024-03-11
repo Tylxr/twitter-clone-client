@@ -10,11 +10,18 @@ export type AuthRequestInterceptor = { fetchUrl: string; authHeader: [string, st
 
 export type Tweet = {
     body: string;
-    comments: string[];
+    comments: Comment[];
     createdDate: string;
     likes: string[];
     userProfile: { username: string; name: string };
     _id: string;
+};
+
+export type Comment = {
+    userProfile: { username: string; name: string };
+    body: string;
+    likes: string[];
+    createdDate: string;
 };
 
 export type FeedSource = "main" | "following" | "user";
