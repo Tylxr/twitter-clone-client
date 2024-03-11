@@ -11,13 +11,15 @@ export default function Feed() {
     const [updateKey, setUpdateKey] = useState(0);
     const dispatch = useAppDispatch();
     const feed = useAppSelector(({ tweet }) => tweet.mainFeed);
+    const [refreshKey, setRefreshkey] = useState(0);
 
     // Lifecycle hooks
     useEffect(() => {
         const fetchData = async () => {
-            const { error, feed } = await getMainFeedData();
+            const { error, feed: mainFeed } = await getMainFeedData();
             if (!error) {
-                dispatch(setFeed({ source: "main", feed }));
+                dispatch(setFeed({ source: "main", feed: mainFeed }));
+                setRefreshkey(refreshKey + 1); // Helps to force the feed to update if a deep property has changed
             }
         };
         fetchData();
@@ -55,5 +57,5 @@ export default function Feed() {
         };
     }, [updateKey, feed]);
 
-    return <div>{feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={"main"} />)}</div>;
+    return <div key={refreshKey}>{feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={"main"} />)}</div>;
 }

@@ -18,8 +18,8 @@ interface TweetProps {
 export default function Tweet(props: TweetProps) {
     // Store, state, etc
     const dispatch = useAppDispatch();
-    const currentUser = useAppSelector(({ app }) => app.username);
-    const [liked, setLiked] = useState<boolean>(props.data.likes.includes(currentUser as string));
+    const currentUser = useAppSelector(({ app }) => app.username as string);
+    const [liked, setLiked] = useState<boolean>(props.data.likes.includes(currentUser));
     const [likes, setLikes] = useState<string[]>(props.data.likes);
 
     // Functions
@@ -31,16 +31,12 @@ export default function Tweet(props: TweetProps) {
                     toggleLikeOnTweet({
                         source: props.source,
                         tweetId: props.data._id,
-                        username: currentUser as string,
+                        username: currentUser,
                     })
                 );
             }
             setLiked(!liked);
-            setLikes(
-                likes.includes(currentUser as string)
-                    ? likes.splice(likes.indexOf(currentUser as string), 1)
-                    : [...likes, currentUser as string]
-            );
+            setLikes(likes.includes(currentUser) ? likes.filter((l) => l !== currentUser) : [...likes, currentUser]);
 
             // Perform request
             const response = await coreFetch(`/tweet/${props.data._id}/like`, { method: "PATCH" });
@@ -52,7 +48,7 @@ export default function Tweet(props: TweetProps) {
                         toggleLikeOnTweet({
                             source: props.source,
                             tweetId: props.data._id,
-                            username: currentUser as string,
+                            username: currentUser,
                         })
                     );
                 }
@@ -66,7 +62,7 @@ export default function Tweet(props: TweetProps) {
                     toggleLikeOnTweet({
                         source: props.source,
                         tweetId: props.data._id,
-                        username: currentUser as string,
+                        username: currentUser,
                     })
                 );
             }
@@ -105,10 +101,8 @@ export default function Tweet(props: TweetProps) {
                     >
                         <FontAwesomeIcon size="lg" icon={faHeart} className="like mr-2" />
                         <span>
-                            <span>{props.data.likes.length}</span>
-                            <span className="hidden xs:inline-block ml-1">
-                                {props.data.likes.length === 1 ? "like" : "likes"}
-                            </span>
+                            <span>{likes.length}</span>
+                            <span className="hidden xs:inline-block ml-1">{likes.length === 1 ? "like" : "likes"}</span>
                         </span>
                     </div>
                     <Link
