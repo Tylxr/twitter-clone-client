@@ -1,13 +1,32 @@
 "use client";
+
 import { FeedTabs, FeedTabPanel } from "../components/FeedTabs";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "@mui/material";
 import ProfileSidebar from "../components/ProfileSidebar";
 import FeedFromAll from "../components/feed/FeedFromAll";
+import { initSocket } from "../lib/socket";
 
 export default function Page() {
     const [currentTab, setTab] = useState(0);
     const handleTabChange = (event: React.SyntheticEvent, tab: number) => setTab(tab);
+
+    useEffect(() => {
+        const socket = initSocket();
+
+        // Event listeners or any other Socket.io logic can be implemented here
+        socket.on("connect", () => console.log("Connected to Socket.io server"));
+
+        socket.on("FOLLOWING_FEED_UPDATED", (val: any) => {
+            console.log("Following feed updated!", val);
+        });
+
+        return () => {
+            // Clean up the socket connection when the component unmounts
+            console.log("Disconnecting socket.io connection.");
+            socket.disconnect();
+        };
+    }, []);
 
     return (
         <>
