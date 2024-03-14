@@ -6,19 +6,29 @@ import { Card } from "@mui/material";
 import ProfileSidebar from "../components/ProfileSidebar";
 import FeedFromAll from "../components/feed/FeedFromAll";
 import { initSocket } from "../lib/socket";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import Tweet from "../components/Tweet";
+import { Tweet as TweetType } from "../lib/types";
+import { setFeed } from "../store/tweet/tweetSlice";
+import coreFetch from "../lib/coreFetch";
 
 export default function Page() {
+    // Store, state, etc
+    const dispatch = useAppDispatch();
     const [currentTab, setTab] = useState(0);
     const handleTabChange = (event: React.SyntheticEvent, tab: number) => setTab(tab);
+    const followingFeed = useAppSelector(({ tweet }) => tweet.followingFeed);
 
+    // Lifecycle hooks
     useEffect(() => {
         const socket = initSocket();
 
         // Event listeners or any other Socket.io logic can be implemented here
         socket.on("connect", () => console.log("Connected to Socket.io server"));
 
-        socket.on("FOLLOWING_FEED_UPDATED", (val: any) => {
-            console.log("Following feed updated!", val);
+        socket.on("FOLLOWING_FEED_UPDATED", (feed: TweetType[]) => {
+            console.log("GOT FEED", feed);
+            dispatch(setFeed({ source: "following", feed }));
         });
 
         return () => {
@@ -27,6 +37,16 @@ export default function Page() {
             socket.disconnect();
         };
     }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const response = await coreFetch(`/feed/fromFollowing`, { method: "GET" });
+            if (response && !response.data.error) {
+                dispatch(setFeed({ source: "following", feed: response.data.feed }));
+            }
+        };
+        fetchData();
+    }, [dispatch]);
 
     return (
         <>
@@ -43,7 +63,9 @@ export default function Page() {
                                 <FeedFromAll />
                             </FeedTabPanel>
                             <FeedTabPanel currentTab={currentTab} tabIndex={1}>
-                                {/* <Feed source="following" /> */}
+                                {followingFeed?.map((tweet) => (
+                                    <Tweet key={tweet._id} data={tweet} source={"following"} />
+                                ))}
                             </FeedTabPanel>
                         </FeedTabs>
                     </Card>
