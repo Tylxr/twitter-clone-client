@@ -17,7 +17,19 @@ export default function Page() {
     const dispatch = useAppDispatch();
     const [currentTab, setTab] = useState(0);
     const handleTabChange = (event: React.SyntheticEvent, tab: number) => setTab(tab);
-    const followingFeed = useAppSelector(({ tweet }) => tweet.followingFeed);
+    const { followingFeed, following } = useAppSelector(({ tweet, app }) => ({
+        followingFeed: tweet.followingFeed,
+        following: app.userProfile?.following || [],
+    }));
+
+    // Functions
+    const fetchData = async () => {
+        const response = await coreFetch(`/feed/fromFollowing`, { method: "GET" });
+        debugger;
+        if (response && !response.data.error) {
+            dispatch(setFeed({ source: "following", feed: response.data.feed }));
+        }
+    };
 
     // Lifecycle hooks
     useEffect(() => {
@@ -26,9 +38,10 @@ export default function Page() {
         // Event listeners or any other Socket.io logic can be implemented here
         socket.on("connect", () => console.log("Connected to Socket.io server"));
 
-        socket.on("FOLLOWING_FEED_UPDATED", (feed: TweetType[]) => {
-            console.log("GOT FEED", feed);
-            dispatch(setFeed({ source: "following", feed }));
+        socket.on("POST_CREATED", async (username: string) => {
+            if (following.includes(username)) {
+                await fetchData();
+            }
         });
 
         return () => {
@@ -37,16 +50,9 @@ export default function Page() {
             socket.disconnect();
         };
     }, []);
-
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await coreFetch(`/feed/fromFollowing`, { method: "GET" });
-            if (response && !response.data.error) {
-                dispatch(setFeed({ source: "following", feed: response.data.feed }));
-            }
-        };
         fetchData();
-    }, [dispatch]);
+    }, []);
 
     return (
         <>
