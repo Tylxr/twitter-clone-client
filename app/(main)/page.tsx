@@ -25,7 +25,6 @@ export default function Page() {
     // Functions
     const fetchData = async () => {
         const response = await coreFetch(`/feed/fromFollowing`, { method: "GET" });
-        debugger;
         if (response && !response.data.error) {
             dispatch(setFeed({ source: "following", feed: response.data.feed }));
         }
