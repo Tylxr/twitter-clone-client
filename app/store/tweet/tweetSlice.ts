@@ -50,3 +50,7 @@ export const { setFeed, toggleLikeOnTweet } = tweetSlice.actions;
 export default tweetSlice.reducer;
 
 export const getUserFeed = createSelector([(state) => state.tweet], (tweetState: TweetState) => tweetState.userFeed);
+export const getFollowingFeed = createSelector(
+    [(state) => state.tweet],
+    (tweetState: TweetState) => tweetState.followingFeed
+);

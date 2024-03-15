@@ -5,11 +5,10 @@ import React, { useEffect, useState } from "react";
 import { Card } from "@mui/material";
 import ProfileSidebar from "../components/ProfileSidebar";
 import FeedFromAll from "../components/feed/FeedFromAll";
-import { initSocket } from "../lib/socket";
+import { getSocket, initSocket } from "../lib/socket";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import Tweet from "../components/Tweet";
-import { Tweet as TweetType } from "../lib/types";
-import { setFeed } from "../store/tweet/tweetSlice";
+import { getFollowingFeed, setFeed } from "../store/tweet/tweetSlice";
 import coreFetch from "../lib/coreFetch";
 
 export default function Page() {
@@ -17,10 +16,11 @@ export default function Page() {
     const dispatch = useAppDispatch();
     const [currentTab, setTab] = useState(0);
     const handleTabChange = (event: React.SyntheticEvent, tab: number) => setTab(tab);
-    const { followingFeed, following } = useAppSelector(({ tweet, app }) => ({
-        followingFeed: tweet.followingFeed,
+    const { following, username } = useAppSelector(({ app }) => ({
         following: app.userProfile?.following || [],
+        username: app.username,
     }));
+    const followingFeed = useAppSelector(getFollowingFeed);
 
     // Functions
     const fetchData = async () => {
@@ -35,18 +35,19 @@ export default function Page() {
         const socket = initSocket();
 
         // Event listeners or any other Socket.io logic can be implemented here
-        socket.on("connect", () => console.log("Connected to Socket.io server"));
-
-        socket.on("POST_CREATED", async (username: string) => {
-            if (following.includes(username)) {
-                await fetchData();
-            }
+        getSocket().on("connect", () => {
+            console.log("Connected to Socket.io server");
+            getSocket().on("POST_CREATED", async (username: string) => {
+                if (following.includes(username)) {
+                    await fetchData();
+                }
+            });
         });
 
         return () => {
             // Clean up the socket connection when the component unmounts
             console.log("Disconnecting socket.io connection.");
-            socket.disconnect();
+            getSocket().disconnect();
         };
     }, []);
     useEffect(() => {

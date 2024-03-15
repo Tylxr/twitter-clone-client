@@ -1,16 +1,16 @@
+import { useAppSelector } from "@/app/store/hooks";
 import { io, Socket } from "socket.io-client";
 
 let socket: Socket;
 
 export const initSocket = () => {
     socket = io(process.env.NEXT_PUBLIC_SOCKET_IO_SERVER as string, {
-        reconnectionDelayMax: 10000,
-        auth: {
-            token: "123",
-        },
-        query: {
-            "my-key": "my-value",
-        },
+        // auth: {
+        //     token: "123",
+        // },
+        // query: {
+        //     "my-key": "my-value",
+        // },
         // withCredentials: true,
     });
 
