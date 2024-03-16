@@ -1,14 +1,16 @@
 import { getCookie } from "cookies-next";
 import { FetchConfig, FetchResponse } from "../types";
 import { authFetchClient } from "../authFetch";
+import refreshToken from "../utils/refreshToken";
+import jwtAboutToExpire from "../utils/jwtAboutToExpire";
 
 // Private fetch wrapper for Core Service
 export default async function coreFetch(url: string, config?: Partial<FetchConfig>): Promise<FetchResponse> {
     // Interceptor - ensure access token is present
     let accessToken = getCookie("twitter_token");
     if (!accessToken || jwtAboutToExpire(accessToken)) {
-        console.log("Access token has expired - refreshing!");
-        await refreshAuth();
+        console.log("CoreFetch: Access token has expired - refreshing!");
+        await refreshToken();
         accessToken = getCookie("twitter_token");
     }
 
@@ -49,28 +51,3 @@ export default async function coreFetch(url: string, config?: Partial<FetchConfi
             return undefined;
         });
 }
-
-const refreshAuth = async () => {
-    try {
-        await authFetchClient("/refresh");
-    } catch (err) {
-        console.error(err);
-        console.error("Error trying to refresh prior to a core service request.");
-    }
-};
-
-const jwtAboutToExpire = (token: string) => {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-        window
-            .atob(base64)
-            .split("")
-            .map((c: string) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
-            .join("")
-    );
-
-    // Check if JWT expiration is under 1 minute away
-    const payload = JSON.parse(jsonPayload);
-    return payload.exp - Math.floor(Date.now() / 1000) < 60;
-};

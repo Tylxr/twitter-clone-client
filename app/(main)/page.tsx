@@ -32,7 +32,7 @@ export default function Page() {
 
     // Lifecycle hooks
     useEffect(() => {
-        const socket = initSocket();
+        initSocket();
 
         // Event listeners or any other Socket.io logic can be implemented here
         getSocket().on("connect", () => {

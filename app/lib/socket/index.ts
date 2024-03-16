@@ -1,27 +1,15 @@
 import { useAppSelector } from "@/app/store/hooks";
+import { getCookie } from "cookies-next";
 import { io, Socket } from "socket.io-client";
+import jwtAboutToExpire from "../utils/jwtAboutToExpire";
+import refreshToken from "../utils/refreshToken";
 
 let socket: Socket;
 
 export const initSocket = () => {
     socket = io(process.env.NEXT_PUBLIC_SOCKET_IO_SERVER as string, {
-        // auth: {
-        //     token: "123",
-        // },
-        // query: {
-        //     "my-key": "my-value",
-        // },
-        // withCredentials: true,
+        auth: (cb) => authCb(cb),
     });
-
-    /**     Example of how to implement auth
-     * 
-     * const socket = io({
-            auth: (cb) => {
-                cb({ token: localStorage.token })
-            }
-        });
-     */
 
     socket.io.on("error", (error) => {
         console.error(error);
@@ -37,3 +25,13 @@ export const getSocket = () => {
     }
     return socket;
 };
+
+async function authCb(cb: (data: Object) => void) {
+    let token = getCookie("twitter_token");
+    if (!token || jwtAboutToExpire(token)) {
+        console.log("SocketIO Auth: Access token has expired - refreshing!");
+        await refreshToken();
+        token = getCookie("twitter_token");
+    }
+    return cb({ token });
+}
