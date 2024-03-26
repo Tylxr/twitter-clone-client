@@ -16,10 +16,7 @@ export default function Page() {
     const dispatch = useAppDispatch();
     const [currentTab, setTab] = useState(0);
     const handleTabChange = (event: React.SyntheticEvent, tab: number) => setTab(tab);
-    const { following, username } = useAppSelector(({ app }) => ({
-        following: app.userProfile?.following || [],
-        username: app.username,
-    }));
+    const following = useAppSelector(({ app }) => app.userProfile?.following || []);
     const followingFeed = useAppSelector(getFollowingFeed);
 
     // Functions
@@ -69,6 +66,9 @@ export default function Page() {
                                 <FeedFromAll />
                             </FeedTabPanel>
                             <FeedTabPanel currentTab={currentTab} tabIndex={1}>
+                                {followingFeed.length === 0 && (
+                                    <p className="text-black text-center">No posts from followers yet.</p>
+                                )}
                                 {followingFeed?.map((tweet) => (
                                     <Tweet key={tweet._id} data={tweet} source={"following"} />
                                 ))}

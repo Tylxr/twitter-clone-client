@@ -57,5 +57,11 @@ export default function Feed() {
         };
     }, [updateKey, feed]);
 
-    return <div key={refreshKey}>{feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={"main"} />)}</div>;
+    if (feed.length === 0) return <p className="text-black text-center">No posts yet. Be the first!</p>;
+
+    return (
+        <div key={refreshKey}>
+            {feed && feed?.map((tweet) => <Tweet key={tweet._id} data={tweet} source={"main"} />)}
+        </div>
+    );
 }
